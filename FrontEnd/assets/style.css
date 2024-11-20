@@ -125,6 +125,154 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+/* Style pour le menu de catégories */
+#category-menu {
+	display: flex;
+	gap: 15px; /* Espacement entre les boutons */
+	margin-bottom: 30px; /* Espacement sous le menu */
+	justify-content: center; /* Centrer les éléments horizontalement */
+  }
+  
+  .category-button {
+	padding: 10px 20px;
+	font-size: 1.2em;
+	background-color: #f0f0f0;
+	color: #333;
+	border: 2px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Effet au survol des boutons */
+  .category-button:hover {
+	background-color: #B1663C;
+	color: white;
+  }
+  
+/*********** BUTTONS ***********/
+
+/* Conteneur du menu de catégories */
+#category-menu {
+	display: flex; 
+	justify-content: center; /* Centrer les boutons horizontalement */
+	gap: 20px; /* Espacement entre les boutons */
+	padding: 20px 0; /* Espacement autour du menu */
+	margin-top: 20px; /* Espacement depuis le haut pour ne pas chevaucher la galerie */
+	flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si nécessaire */
+	position: relative;
+  }
+  
+  /* Style de base pour les boutons de filtre */
+  .category-button {
+	padding: 10px 20px;
+	font-size: 1.2em;
+	height: 37px;
+	border-radius: 60px;
+	border: 1px solid #1D6154;
+	background-color: transparent;
+	color: #1D6154;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Style spécifique pour le bouton "Tous" */
+  .category-button#all {
+	background-color: #1D6154;
+	color: white;
+  }
+  
+  /* Effet de survol pour les boutons */
+  .category-button:hover {
+	background-color: #B1663C;
+	color: white;
+  }
+  
+  /* Style des textes dans les boutons */
+  .category-button span {
+	font-family: 'Syne', sans-serif;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+  }
+  
+  /* Bouton activé (pour indiquer la catégorie sélectionnée) */
+  .category-button.active {
+	background-color: #1D6154;
+	color: white;
+	border: 1px solid #1D6154;
+  }
+  
+  /* Style pour la catégorie "Tous" */
+  #all span {
+	color: #FFFFFF;
+  }
+  
+  /* Positionnement des catégories spécifiques sans utiliser `absolute` */
+  .category-button#objets {
+	width: 100px;
+  }
+  
+  .category-button#appartements {
+	width: 157px;
+  }
+  
+  .category-button#hotels-restaurants {
+	width: 198px;
+  }
+  
+  /* Ajout d'un peu de marge pour espacer les boutons */
+  .category-button#all {
+	margin-left: 0; /* Pas de marge gauche spécifique */
+  }
+  
+  .category-button#objets {
+	width: 100px;
+  }
+  
+  .category-button#appartements {
+	width: 157px;
+  }
+  
+  .category-button#hotels-restaurants {
+	width: 198px;
+  }
+  
+  /* Effet au survol pour chaque bouton */
+  .category-button:hover {
+	background-color: #1D6154;
+	color: white;
+  }
+  
+  /* Réinitialisation des positions absolues inutiles */
+  #objets,
+  #appartements,
+  #hotels-restaurants,
+  #all {
+	position: static;
+  }
+  
+  /* Ajout de marges pour bien espacer les éléments */
+  #all {
+	margin-left: 20px; /* Espacement entre les éléments */
+  }
+  
+  /* Ajout de petits ajustements de style pour les catégories */
+  #objets span, #appartements span, #hotels-restaurants span {
+	color: #1D6154;
+  }
+  
+  #all span {
+	color: #FFFFFF;
+  }
+  
+/*********** GALLERY ***********/
 .gallery {
 	width: 100%;
 	display: grid;
