@@ -52,6 +52,9 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	margin: 0;
+    padding: 0;
+	background-color: #FFFEF8;
 }
 header {
 	display: flex;
@@ -84,20 +87,69 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #B1663C;
+    margin: 0;
+}
+
+header h1 span {
+    display: block;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #93532F;
+}
+
+nav {
+    display: flex;
+}
+
 nav ul {
-	display: flex;
-	align-items: center;
-	list-style-type: none;
-
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
+
 nav li {
-	padding: 0 10px;
-	font-size: 1.2em;
+    list-style: none;
+	
 }
 
-li:hover {
-	color: #B1663C;
+nav a {
+    font-family: 'Work Sans', sans-serif;
+	text-decoration: none; 
+    font-size: 16px;
+    font-weight: 400;
+    color: #000;
+    transition: color 0.3s ease;
 }
+
+nav a.active {
+    font-weight: bold;
+}
+
+nav a:hover {
+	font-weight: bold;
+}
+
+nav img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -126,31 +178,6 @@ li:hover {
 	margin-bottom: 1em;
 }
 
-/* Style pour le menu de catégories */
-#category-menu {
-	display: flex;
-	gap: 15px; /* Espacement entre les boutons */
-	margin-bottom: 30px; /* Espacement sous le menu */
-	justify-content: center; /* Centrer les éléments horizontalement */
-  }
-  
-  .category-button {
-	padding: 10px 20px;
-	font-size: 1.2em;
-	background-color: #f0f0f0;
-	color: #333;
-	border: 2px solid #ccc;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  /* Effet au survol des boutons */
-  .category-button:hover {
-	background-color: #B1663C;
-	color: white;
-  }
-  
 /*********** BUTTONS ***********/
 
 /* Conteneur du menu de catégories */
@@ -191,6 +218,7 @@ li:hover {
   .category-button:hover {
 	background-color: #B1663C;
 	color: white;
+	cursor: default;
   }
   
   /* Style des textes dans les boutons */
@@ -273,6 +301,7 @@ li:hover {
   }
   
 /*********** GALLERY ***********/
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -328,9 +357,118 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
-footer nav ul {
-	display: flex;
-	justify-content: flex-end;
-	margin: 2em
+/*********** FOOTER ***********/
+
+footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 50px;
+	background-color: #FFFFFF;
+    margin-top: auto;
 }
 
+footer nav {
+    font-size: 14px;
+    font-weight: 300;
+    color: #000;
+}
+
+.legal-notice:hover {
+    font-weight: bold;  /* Texte en gras au survol */
+}
+
+/*********** LOGIN PAGE ***********/
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.login-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px;
+	line-height: 36px;
+    font-weight: 700;
+    color: #1D6154;
+    margin-bottom: 30px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-label {
+    display: block;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+	line-height: 16.42px;
+    font-size: 14px;
+    color: #3D3D3D;
+    text-align: left;
+}
+
+.form-input {
+    width: 100%;
+    max-width: 379px; /* Largeur maximale du champ */
+    padding: 12px;
+    border: 1px solid #D1D1D1; /* Bordure légère */
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+}
+
+.forgot-password {
+    font-size: 14px;
+    font-weight: 500;
+    color: #3D3D3D;
+    text-align: right;
+    text-decoration: underline;
+    margin-top: -10px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    max-width: 179px; /* Largeur maximale du bouton */
+    padding: 15px;
+    background-color: #1D6154;
+    color: white;
+    border: none;
+    border-radius: 60px; /* Coins arrondis */
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Espacement au-dessus du bouton */
+    text-align: center;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button[type="submit"]:hover {
+    background-color: #B1663C;
+}
+
+.forgot-password {
+    display: block;
+    text-align: center;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 20px; /* Espacement entre le bouton et le lien */
+    text-decoration: underline;
+    color: #3D3D3D;
+}
+
+.forgot-password:hover {
+	font-weight: bold;
+}
