@@ -3,6 +3,8 @@
    License: none (public domain)
 */
 
+
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -47,20 +49,25 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
+
+* { 
+	box-sizing: border-box; 
+} 
+
 body {
-	max-width: 1140px;
-	margin:auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 1440px;
+	min-height: 100vh;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
-	margin: 0;
-    padding: 0;
+	margin : 0;
+	padding: 0;
 	background-color: #FFFEF8;
+	overflow-x: hidden;
 }
-header {
-	display: flex;
-	justify-content: space-between;
-	margin: 50px 0
-}
+
 section {
 	margin: 50px 0
 }
@@ -91,7 +98,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 50px;
+    margin-top: 50px; /* 50px du haut */
+    margin-left: 150px; /* 150px du bord gauche */
+    margin-right: 150px; /* 150px du bord droit */
 }
 
 header h1 {
@@ -118,8 +127,9 @@ nav {
 
 nav ul {
     display: flex;
-    gap: 20px;
+    gap: 44px;
     align-items: center;
+	justify-content: center;
 }
 
 nav li {
@@ -128,7 +138,6 @@ nav li {
 }
 
 nav a {
-    font-family: 'Work Sans', sans-serif;
 	text-decoration: none; 
     font-size: 16px;
     font-weight: 400;
@@ -137,22 +146,34 @@ nav a {
 }
 
 nav a.active {
-    font-weight: bold;
+    font-weight: 700;
 }
 
 nav a:hover {
-	font-weight: bold;
+	font-weight: 700;
 }
 
-nav img {
-    width: 20px;
-    height: 20px;
+nav i {
+    font-size: 20px;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+nav i:hover {
+    transform: scale(1.3); 
+}
+
+/*********** MAIN ***********/
+
+main {
+	margin: 0 245px; 
+	flex: 1; 
 }
 
 #introduction {
 	display: flex;
 	align-items: center;
+	margin: 140px 0; 
 }
 #introduction figure {
 	flex: 1
@@ -363,19 +384,20 @@ footer {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 20px 50px;
+	width: 100%;
 	background-color: #FFFFFF;
-    margin-top: auto;
+    padding: 24px 107px 20px 107px;
 }
 
-footer nav {
-    font-size: 14px;
-    font-weight: 300;
-    color: #000;
+.legal-notice {
+	font-weight: 300;
+	font-size: 14px;
+	line-height: 16.42px;
+	color: #000;
 }
 
 .legal-notice:hover {
-    font-weight: bold;  /* Texte en gras au survol */
+    font-weight: 700;
 }
 
 /*********** LOGIN PAGE ***********/
@@ -384,7 +406,7 @@ footer nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px 20px;
+	margin: 140px;
 }
 
 .login-title {
@@ -406,7 +428,6 @@ footer nav {
 
 .form-label {
     display: block;
-    font-family: 'Work Sans', sans-serif;
     font-weight: 500;
 	line-height: 16.42px;
     font-size: 14px;
@@ -416,26 +437,19 @@ footer nav {
 
 .form-input {
     width: 100%;
-    max-width: 379px; /* Largeur maximale du champ */
-    padding: 12px;
-    border: 1px solid #D1D1D1; /* Bordure légère */
+    max-width: 379px;
+	height: 51px;
+    padding: 0 10px;
     font-size: 16px;
-    color: #333;
+	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);     color: #333;
     background-color: #fff;
-}
-
-.forgot-password {
-    font-size: 14px;
-    font-weight: 500;
-    color: #3D3D3D;
-    text-align: right;
-    text-decoration: underline;
-    margin-top: -10px;
+	border: none;
 }
 
 button[type="submit"] {
     width: 100%;
-    max-width: 179px; /* Largeur maximale du bouton */
+    max-width: 179px;
+	height: 36px;
     padding: 15px;
     background-color: #1D6154;
     color: white;
@@ -443,12 +457,13 @@ button[type="submit"] {
     border-radius: 60px; /* Coins arrondis */
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 20px; /* Espacement au-dessus du bouton */
-    text-align: center;
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
     margin-left: auto;
     margin-right: auto;
 }
@@ -464,7 +479,7 @@ button[type="submit"]:hover {
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    margin-top: 20px; /* Espacement entre le bouton et le lien */
+    margin-top: 8px;
     text-decoration: underline;
     color: #3D3D3D;
 }
