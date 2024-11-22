@@ -486,3 +486,17 @@ button[type="submit"]:hover {
 .forgot-password:hover {
 	font-weight: bold;
 }
+
+.error-message {
+    color: #B1663C;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.js-error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
