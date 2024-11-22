@@ -11,9 +11,8 @@ Une fois les dépendances installées lancez le projet avec la commande `npm sta
 Compte de test pour Sophie Bluel
 
 ```
-email: sophie.bluel@test.tld
-
-password: S0phie 
+sophie.bluel@test.tld
+S0phie
 ```
 Lien pour voir la
 [documentation Swagger](http://localhost:5678/api-docs/)

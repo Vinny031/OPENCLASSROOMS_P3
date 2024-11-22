@@ -27,12 +27,13 @@
         <h2 class="login-title">Log In</h2>
         <form class="login-form">
             <label for="email" class="form-label">E-mail</label>
-            <input type="email" id="email" class="form-input">
+            <input type="email" name="email" class="form-input js-email" required>
             <label for="password" class="form-label">Mot de passe</label>
-            <input type="password" id="password" class="form-input">
+            <input type="password" name="password" class="form-input js-password" required>
             <button type="submit" class="btn-submit">Se connecter</button>
             <a href="#" class="forgot-password">Mot de passe oublié</a>
         </form>
+        <div class="error-message js-error-message" style="color: red; margin-top: 20px; display: none;"></div>        
     </main>
     <footer>
         <nav>
@@ -41,5 +42,6 @@
             </ul>
         </nav>
     </footer>
+    <script src="js/login.js"></script>
 </body>
 </html>
