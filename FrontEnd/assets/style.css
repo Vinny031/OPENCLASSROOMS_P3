@@ -97,9 +97,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 50px; /* 50px du haut */
-    margin-left: 150px; /* 150px du bord gauche */
-    margin-right: 150px; /* 150px du bord droit */
+    margin: 50px 150px 0;
 }
 
 header h1 {
@@ -160,6 +158,30 @@ nav i {
 
 nav i:hover {
     transform: scale(1.3); 
+}
+
+/*********** BARRE EDITION ***********/
+
+.edit-mode-bar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: black;
+	color: white;
+	font-size: 16px;
+	font-weight: 400;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 59px;
+	z-index: 1000;
+	margin: 0;
+	padding: 0;
+	gap: 11.42px;
+}
+
+.hidden {
+display: none !important;
 }
 
 /*********** MAIN ***********/
@@ -319,7 +341,28 @@ main {
   #all span {
 	color: #FFFFFF;
   }
-  
+
+/*********** PORTFOLIO HEADER ***********/
+
+.portfolio-header {
+    display: flex;
+    justify-content: center; /* Centre le titre */
+    align-items: center;
+	height: 100%;
+	gap: 31px;
+}
+
+.portfolio-header h2 {
+    margin: 0; /* Enlève les marges par défaut pour éviter tout décalage */
+    font-size: 30px; /* Assure une taille de texte adaptée */
+}
+
+.edit-container {
+	display: flex;
+    align-items: center;
+	gap: 11px;
+}
+
 /*********** GALLERY ***********/
 
 .gallery {
@@ -334,6 +377,9 @@ main {
 	width: 100%;
 
 }
+
+/*********** CONTACT ***********/
+
 #contact {
 	width: 50%;
 margin: auto;

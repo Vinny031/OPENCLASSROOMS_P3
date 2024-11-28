@@ -1,107 +1,218 @@
 const apiUrl = 'http://localhost:5678/api/works';
 
-// Fonction pour récupérer les données
-async function fetchWorks() {
-  try {
-    const response = await fetch(apiUrl); // Envoie la requête GET
-    const works = await response.json(); // Convertit la réponse en JSON
+// Variable globale pour stocker les travaux
+let allWorks = [];
 
-    // Créer un Map pour extraire les catégories uniques (id et nom)
+// Fonction utilitaire pour les appels API
+async function apiRequest(endpoint, options = {}) {
+    try {
+        // Note : Ne pas répéter '/works' dans l'URL, juste utiliser l'endpoint
+        const response = await fetch(`http://localhost:5678/api/${endpoint}`, options);
+        if (!response.ok) throw new Error("Erreur API");
+        return await response.json();
+    } catch (error) {
+        console.error("Erreur lors de l'appel à l'API :", error);
+        throw error;
+    }
+}
+
+// Vérifie si l'utilisateur est connecté
+function checkAuth() {
+    const token = localStorage.getItem("authToken");
+
+    // Si l'utilisateur est connecté
+    if (token) {
+        // Afficher la barre de mode édition
+        enableEditMode();
+         // Modifier la marge du header
+         document.querySelector('header').style.marginTop = '97px'; // Mettre margin-top à 97px
+
+        // Masquer les filtres
+        const filters = document.getElementById('category-menu');
+        if (filters) {
+            filters.classList.add('hidden');  // Masquer le menu des filtres
+        }
+
+        // Afficher les icônes d'édition
+        const editIcons = document.querySelectorAll('.fa-pen-to-square');
+        const editText = document.querySelector('.edit-text');
+        
+        if (editIcons.length > 0) {
+            editIcons.forEach(icon => icon.classList.remove('hidden')); // Afficher icônes
+        }
+        if (editText) {
+            editText.classList.remove('hidden'); // Afficher texte Modifier
+        }
+
+        // Mettre à jour le texte du bouton de la nav pour déconnexion
+        const loginLink = document.querySelector('a[href="login.html"]');
+        if (loginLink) {
+            loginLink.textContent = "Logout";
+            loginLink.setAttribute('href', '#');
+            loginLink.addEventListener('click', logout);
+        }
+    } else {
+        // Si l'utilisateur n'est pas connecté, réinitialiser l'interface
+        disableEditMode();
+        // Si l'utilisateur n'est pas connecté, revenir à la valeur par défaut
+        document.querySelector('header').style.marginTop = '50px'; // Mettre margin-top à 50px
+        // Afficher les filtres si l'utilisateur n'est pas connecté
+        const filters = document.getElementById('category-menu');
+        if (filters) {
+            filters.classList.remove('hidden');  // Afficher le menu des filtres
+        }
+
+        // Masquer les icônes d'édition
+        const editIcons = document.querySelectorAll('.fa-pen-to-square');
+        const editText = document.querySelector('.edit-text');
+        
+        if (editIcons.length > 0) {
+            editIcons.forEach(icon => icon.classList.add('hidden')); // Masquer icônes
+        }
+        if (editText) {
+            editText.classList.add('hidden'); // Masquer texte Modifier
+        }
+    }
+}
+
+// Active le mode édition
+function enableEditMode() {
+    const editModeBar = document.querySelector('.edit-mode-bar');
+    const editIcon = document.querySelector('.edit-mode-bar i');
+    const editText = document.querySelector('.edit-mode-bar span');
+
+    // Vérifie si l'élément existe avant de modifier son contenu
+    if (editModeBar && editIcon && editText) {
+        editModeBar.classList.remove('hidden');
+        editIcon.classList.remove('hidden');
+        editText.classList.remove('hidden');
+    } else {
+        console.error("L'un des éléments pour activer le mode édition est manquant.");
+    }
+}
+
+// Désactive le mode édition
+function disableEditMode() {
+    const editModeBar = document.querySelector('.edit-mode-bar');
+    const filters = document.getElementById('category-menu');
+    const editIcons = document.querySelectorAll('.fa-pen-to-square');
+    const editText = document.querySelector('.edit-text');
+
+    // Masquer la barre de mode édition
+    if (editModeBar) {
+        editModeBar.classList.add('hidden');
+    }
+
+    // Afficher les filtres
+    if (filters) {
+        filters.classList.remove('hidden');
+    }
+
+    // Masquer les icônes de modification
+    if (editIcons.length > 0) {
+        editIcons.forEach(icon => icon.classList.add('hidden'));
+    }
+
+    // Masquer le texte Modifier
+    if (editText) {
+        editText.classList.add('hidden');
+    }
+
+    // Remettre le lien Login
+    const loginLink = document.querySelector('a[href="login.html"]');
+    if (loginLink) {
+        loginLink.textContent = "Login";
+        loginLink.setAttribute('href', 'login.html');
+    }
+}
+
+// Fonction pour récupérer et afficher les travaux
+async function fetchWorks() {
+    try {
+        allWorks = await apiRequest('works');
+        displayWorks(allWorks);
+        generateCategoryMenu(extractCategories(allWorks));
+    } catch (error) {
+        console.error("Erreur lors de la récupération des travaux :", error);
+    }
+}
+
+// Fonction pour générer le menu de catégories
+function generateCategoryMenu(categories) {
+    const menuContainer = document.querySelector('#category-menu');
+    menuContainer.innerHTML = ''; // Réinitialise le menu
+
+    const allOption = document.createElement('button');
+    allOption.textContent = 'Tous';
+    allOption.classList.add('category-button', 'active');
+    allOption.addEventListener('click', () => {
+        filterWorksByCategory(null); // Affiche tout
+        setActiveButton(allOption);
+    });
+    menuContainer.appendChild(allOption);
+
+    categories.forEach(({ id, name }) => {
+        const categoryOption = document.createElement('button');
+        categoryOption.textContent = name;
+        categoryOption.classList.add('category-button');
+        categoryOption.addEventListener('click', () => {
+            filterWorksByCategory(id);
+            setActiveButton(categoryOption);
+        });
+        menuContainer.appendChild(categoryOption);
+    });
+}
+
+// Fonction pour extraire les catégories uniques
+function extractCategories(works) {
     const categories = new Map();
     works.forEach(work => {
-      if (work.category) {
-        categories.set(work.category.id, work.category.name); // Associe ID et nom de la catégorie
-      }
+        if (work.category) {
+            categories.set(work.category.id, work.category.name);
+        }
     });
-
-    // Convertir la Map en tableau d'objets pour générer le menu
-    const menuCategories = Array.from(categories, ([id, name]) => ({ id, name }));
-    generateCategoryMenu(menuCategories); // Génère le menu avec les catégories
-    displayWorks(works); // Affiche les travaux dans la galerie
-  } catch (error) {
-    console.error('Erreur lors de la récupération des travaux :', error);
-  }
+    return Array.from(categories, ([id, name]) => ({ id, name }));
 }
 
-// Fonction pour générer le menu de catégories dynamiquement
-function generateCategoryMenu(categories) {
-  const menuContainer = document.querySelector('#category-menu'); // Assurez-vous que cet élément existe
-
-  // Supprimer les anciens boutons s'il y en a déjà
-  menuContainer.innerHTML = '';
-
-  // Créer un bouton "Tous" pour afficher tous les travaux par défaut (seulement une fois)
-  const allOption = document.createElement('button');
-  allOption.textContent = 'Tous';
-  allOption.classList.add('category-button'); // Ajoute la classe de base
-  allOption.classList.add('active'); // On met "Tous" actif par défaut
-
-  // Ajouter un événement au clic pour afficher tous les travaux
-  allOption.addEventListener('click', () => {
-    fetchWorks(); // Recharge tous les travaux
-    removeActiveClassFromOtherButtons(allOption); // Retirer l'active des autres
-    allOption.classList.add('active'); // Ajouter la classe active au bouton "Tous"
-  });
-
-  menuContainer.appendChild(allOption);
-
-  // Créer un bouton pour chaque catégorie
-  categories.forEach(({ id, name }) => {
-    const categoryOption = document.createElement('button');
-    categoryOption.textContent = name;
-    categoryOption.classList.add('category-button'); // Ajoute la classe de base
-
-    // Ajouter un événement au clic pour filtrer les travaux
-    categoryOption.addEventListener('click', () => {
-      filterWorksByCategory(id); // Filtre les travaux par ID de catégorie
-      removeActiveClassFromOtherButtons(categoryOption); // Retirer l'active des autres
-      categoryOption.classList.add('active'); // Ajouter la classe active au bouton cliqué
-    });
-
-    menuContainer.appendChild(categoryOption);
-  });
-}
-
-// Fonction pour filtrer les travaux par ID de catégorie
+// Fonction pour filtrer les travaux
 function filterWorksByCategory(categoryId) {
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(works => {
-      // Filtrer les travaux en fonction de l'ID de la catégorie
-      const filteredWorks = works.filter(work => work.category && work.category.id === categoryId);
-
-      // Afficher les travaux filtrés
-      displayWorks(filteredWorks); 
-    })
-    .catch(error => console.error('Erreur lors du filtrage des travaux :', error));
+    const filteredWorks = categoryId
+        ? allWorks.filter(work => work.category && work.category.id === categoryId)
+        : allWorks; // Si pas de catégorie, affiche tout
+    displayWorks(filteredWorks);
 }
 
 // Fonction pour afficher les travaux dans la galerie
 function displayWorks(works) {
-  const gallery = document.querySelector('#gallery'); // Assurez-vous que l'élément existe
-  gallery.innerHTML = ''; // Vide la galerie avant d'ajouter les nouveaux éléments
-  works.forEach(work => {
-    const workElement = document.createElement('div');
-    workElement.classList.add('work');
-    workElement.innerHTML = `
-      <img src="${work.imageUrl}" alt="${work.title}" />
-      <h3>${work.title}</h3>
-      <p>${work.description}</p>
-    `;
-    gallery.appendChild(workElement); // Ajoute le travail à la galerie
-  });
+    const gallery = document.querySelector('#gallery');
+    gallery.innerHTML = ''; // Vide la galerie
+    works.forEach(work => {
+        const workElement = document.createElement('div');
+        workElement.classList.add('work');
+        workElement.innerHTML = `
+            <img src="${work.imageUrl}" alt="${work.title}" />
+            <h3>${work.title}</h3>
+            <p>${work.description}</p>
+        `;
+        gallery.appendChild(workElement);
+    });
 }
 
-// Fonction pour retirer la classe active des autres boutons
-function removeActiveClassFromOtherButtons(currentButton) {
-  const allButtons = document.querySelectorAll('.category-button'); // Sélectionner tous les boutons
-  allButtons.forEach(button => {
-    // Retirer la classe active des boutons sauf celui qui a été cliqué
-    if (button !== currentButton) {
-      button.classList.remove('active');
-    }
-  });
+// Fonction utilitaire pour gérer les boutons actifs
+function setActiveButton(button, buttonsSelector = '.category-button') {
+    document.querySelectorAll(buttonsSelector).forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
 }
 
-// Appeler la fonction pour récupérer et afficher les travaux au démarrage
-fetchWorks();
+// Fonction pour déconnecter l'utilisateur
+function logout(event) {
+    event.preventDefault(); // Empêche le comportement par défaut (recharge de la page)
+    localStorage.removeItem("authToken"); // Supprimer le token
+    window.location.href = "index.html"; // Rediriger vers la page d'accueil
+}
+
+// Appeler les fonctions au chargement
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuth(); // Vérifie si l'utilisateur est connecté
+    fetchWorks(); // Charge les travaux
+});
