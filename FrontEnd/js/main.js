@@ -1,5 +1,4 @@
-// URL de l'API pour récupérer les travaux de l'architecte
-const apiUrl = 'http://localhost:5678/api/works'; // Remplacez par l'URL correcte
+const apiUrl = 'http://localhost:5678/api/works';
 
 // Fonction pour récupérer les données
 async function fetchWorks() {
@@ -7,16 +6,16 @@ async function fetchWorks() {
     const response = await fetch(apiUrl); // Envoie la requête GET
     const works = await response.json(); // Convertit la réponse en JSON
 
-    // Créer un Set pour extraire les catégories uniques
-    const categories = new Set();
+    // Créer un Map pour extraire les catégories uniques (id et nom)
+    const categories = new Map();
     works.forEach(work => {
       if (work.category) {
-        categories.add(work.category.name); // Ajoute le nom de la catégorie au Set
+        categories.set(work.category.id, work.category.name); // Associe ID et nom de la catégorie
       }
     });
 
-    // Convertir le Set en tableau et générer le menu
-    const menuCategories = [...categories];
+    // Convertir la Map en tableau d'objets pour générer le menu
+    const menuCategories = Array.from(categories, ([id, name]) => ({ id, name }));
     generateCategoryMenu(menuCategories); // Génère le menu avec les catégories
     displayWorks(works); // Affiche les travaux dans la galerie
   } catch (error) {
@@ -47,14 +46,14 @@ function generateCategoryMenu(categories) {
   menuContainer.appendChild(allOption);
 
   // Créer un bouton pour chaque catégorie
-  categories.forEach(category => {
+  categories.forEach(({ id, name }) => {
     const categoryOption = document.createElement('button');
-    categoryOption.textContent = category;
+    categoryOption.textContent = name;
     categoryOption.classList.add('category-button'); // Ajoute la classe de base
 
     // Ajouter un événement au clic pour filtrer les travaux
     categoryOption.addEventListener('click', () => {
-      filterWorksByCategory(category); // Filtre les travaux par catégorie
+      filterWorksByCategory(id); // Filtre les travaux par ID de catégorie
       removeActiveClassFromOtherButtons(categoryOption); // Retirer l'active des autres
       categoryOption.classList.add('active'); // Ajouter la classe active au bouton cliqué
     });
@@ -63,13 +62,13 @@ function generateCategoryMenu(categories) {
   });
 }
 
-// Fonction pour filtrer les travaux par catégorie
-function filterWorksByCategory(category) {
+// Fonction pour filtrer les travaux par ID de catégorie
+function filterWorksByCategory(categoryId) {
   fetch(apiUrl)
     .then(response => response.json())
     .then(works => {
-      // Filtrer les travaux en fonction de la catégorie
-      const filteredWorks = works.filter(work => work.category && work.category.name === category);
+      // Filtrer les travaux en fonction de l'ID de la catégorie
+      const filteredWorks = works.filter(work => work.category && work.category.id === categoryId);
 
       // Afficher les travaux filtrés
       displayWorks(filteredWorks); 
@@ -103,5 +102,6 @@ function removeActiveClassFromOtherButtons(currentButton) {
     }
   });
 }
+
 // Appeler la fonction pour récupérer et afficher les travaux au démarrage
 fetchWorks();
