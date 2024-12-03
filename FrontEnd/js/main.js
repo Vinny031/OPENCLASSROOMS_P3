@@ -25,23 +25,23 @@ function checkAuth() {
         // Afficher la barre de mode édition
         enableEditMode();
          // Modifier la marge du header
-         document.querySelector('header').style.marginTop = '97px'; // Mettre margin-top à 97px
+         document.querySelector('header').style.marginTop = '97px';
 
         // Masquer les filtres
         const filters = document.getElementById('category-menu');
         if (filters) {
-            filters.classList.add('hidden');  // Masquer le menu des filtres
+            filters.classList.add('hidden');
         }
 
         // Afficher les icônes d'édition
         const editIcons = document.querySelectorAll('.fa-pen-to-square');
         const editText = document.querySelector('.edit-text');
-        
+
         if (editIcons.length > 0) {
-            editIcons.forEach(icon => icon.classList.remove('hidden')); // Afficher icônes
+            editIcons.forEach(icon => icon.classList.remove('hidden'));
         }
         if (editText) {
-            editText.classList.remove('hidden'); // Afficher texte Modifier
+            editText.classList.remove('hidden');
         }
 
         // Mettre à jour le texte du bouton de la nav pour déconnexion
@@ -55,22 +55,22 @@ function checkAuth() {
         // Si l'utilisateur n'est pas connecté, réinitialiser l'interface
         disableEditMode();
         // Si l'utilisateur n'est pas connecté, revenir à la valeur par défaut
-        document.querySelector('header').style.marginTop = '50px'; // Mettre margin-top à 50px
+        document.querySelector('header').style.marginTop = '50px';
         // Afficher les filtres si l'utilisateur n'est pas connecté
         const filters = document.getElementById('category-menu');
         if (filters) {
-            filters.classList.remove('hidden');  // Afficher le menu des filtres
+            filters.classList.remove('hidden');
         }
 
         // Masquer les icônes d'édition
         const editIcons = document.querySelectorAll('.fa-pen-to-square');
         const editText = document.querySelector('.edit-text');
-        
+
         if (editIcons.length > 0) {
-            editIcons.forEach(icon => icon.classList.add('hidden')); // Masquer icônes
+            editIcons.forEach(icon => icon.classList.add('hidden'));
         }
         if (editText) {
-            editText.classList.add('hidden'); // Masquer texte Modifier
+            editText.classList.add('hidden');
         }
     }
 }
@@ -140,13 +140,12 @@ async function fetchWorks() {
 // Fonction pour générer le menu de catégories
 function generateCategoryMenu(categories) {
     const menuContainer = document.querySelector('#category-menu');
-    menuContainer.innerHTML = ''; // Réinitialise le menu
-
+    menuContainer.innerHTML = '';
     const allOption = document.createElement('button');
     allOption.textContent = 'Tous';
     allOption.classList.add('category-button', 'active');
     allOption.addEventListener('click', () => {
-        filterWorksByCategory(null); // Affiche tout
+        filterWorksByCategory(null);
         setActiveButton(allOption);
     });
     menuContainer.appendChild(allOption);
@@ -178,14 +177,14 @@ function extractCategories(works) {
 function filterWorksByCategory(categoryId) {
     const filteredWorks = categoryId
         ? allWorks.filter(work => work.category && work.category.id === categoryId)
-        : allWorks; // Si pas de catégorie, affiche tout
+        : allWorks;
     displayWorks(filteredWorks);
 }
 
 // Fonction pour afficher les travaux dans la galerie
 function displayWorks(works) {
     const gallery = document.querySelector('#gallery');
-    gallery.innerHTML = ''; // Vide la galerie
+    gallery.innerHTML = '';
     works.forEach(work => {
         const workElement = document.createElement('div');
         workElement.classList.add('work');
@@ -206,13 +205,13 @@ function setActiveButton(button, buttonsSelector = '.category-button') {
 
 // Fonction pour déconnecter l'utilisateur
 function logout(event) {
-    event.preventDefault(); // Empêche le comportement par défaut (recharge de la page)
-    localStorage.removeItem("authToken"); // Supprimer le token
-    window.location.href = "index.html"; // Rediriger vers la page d'accueil
+    event.preventDefault();
+    localStorage.removeItem("authToken");
+    window.location.href = "index.html";
 }
 
 // Appeler les fonctions au chargement
 document.addEventListener('DOMContentLoaded', function() {
-    checkAuth(); // Vérifie si l'utilisateur est connecté
-    fetchWorks(); // Charge les travaux
+    checkAuth();
+    fetchWorks();
 });
