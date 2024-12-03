@@ -140,6 +140,7 @@ nav a {
     font-weight: 400;
     color: #000;
     transition: color 0.3s ease;
+	cursor: default;
 }
 
 nav a.active {
@@ -152,7 +153,7 @@ nav a:hover {
 
 nav i {
     font-size: 20px;
-    cursor: pointer;
+    cursor: default;
     transition: transform 0.3s ease;
 }
 
@@ -223,7 +224,7 @@ main {
 #category-menu {
 	display: flex; 
 	justify-content: center; 
-	gap: 20px; 
+	gap: 10px; 
 	padding: 50px 0; 
 	flex-wrap: wrap; 
 	position: relative;
@@ -253,7 +254,6 @@ main {
 .category-button:hover {
 	background-color: #B1663C;
 	color: white;
-	cursor: default;
   }
   
 .category-button span {
@@ -268,6 +268,7 @@ main {
 	background-color: #1D6154;
 	color: white;
 	border: 1px solid #1D6154;
+	cursor: default;
   }
   
 #all span {
@@ -332,19 +333,26 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+	width: 100%;
 	height: auto;
-	gap: 31px;
+	position: relative;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+	justify-content: center;
 }
 
 .portfolio-header h2 {
     margin: 0;
     font-size: 30px;
-	line-height: 1;
 }
 
 .edit-container {
 	display: flex;
-	align-items: center;  
+	align-content: center;
+    margin-left: 31px; 
 	gap: 11px;
 }
 
@@ -365,12 +373,11 @@ main {
 /*********** CONTACT ***********/
 
 #contact {
-	width: 50%;
-margin: auto;
+	width: 379px;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
-
 }
 #contact h2{
 	margin-bottom: 20px;
@@ -405,6 +412,7 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor:pointer;
 }
 
 /*********** FOOTER ***********/
@@ -427,6 +435,7 @@ footer {
 
 .legal-notice:hover {
     font-weight: 700;
+	cursor: default;
 }
 
 /*********** LOGIN PAGE ***********/
