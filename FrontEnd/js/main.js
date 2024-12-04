@@ -2,11 +2,11 @@ const apiUrl = 'http://localhost:5678/api/works';
 
 // Variable globale pour stocker les travaux
 let allWorks = [];
+let allCategories = [];
 
 // Fonction utilitaire pour les appels API
 async function apiRequest(endpoint, options = {}) {
     try {
-        // Note : Ne pas répéter '/works' dans l'URL, juste utiliser l'endpoint
         const response = await fetch(`http://localhost:5678/api/${endpoint}`, options);
         if (!response.ok) throw new Error("Erreur API");
         return await response.json();
@@ -20,20 +20,15 @@ async function apiRequest(endpoint, options = {}) {
 function checkAuth() {
     const token = localStorage.getItem("authToken");
 
-    // Si l'utilisateur est connecté
     if (token) {
-        // Afficher la barre de mode édition
         enableEditMode();
-         // Modifier la marge du header
-         document.querySelector('header').style.marginTop = '97px';
+        document.querySelector('header').style.marginTop = '97px';
 
-        // Masquer les filtres
         const filters = document.getElementById('category-menu');
         if (filters) {
             filters.classList.add('hidden');
         }
 
-        // Afficher les icônes d'édition
         const editIcons = document.querySelectorAll('.fa-pen-to-square');
         const editText = document.querySelector('.edit-text');
 
@@ -44,7 +39,6 @@ function checkAuth() {
             editText.classList.remove('hidden');
         }
 
-        // Mettre à jour le texte du bouton de la nav pour déconnexion
         const loginLink = document.querySelector('a[href="login.html"]');
         if (loginLink) {
             loginLink.textContent = "Logout";
@@ -52,17 +46,14 @@ function checkAuth() {
             loginLink.addEventListener('click', logout);
         }
     } else {
-        // Si l'utilisateur n'est pas connecté, réinitialiser l'interface
         disableEditMode();
-        // Si l'utilisateur n'est pas connecté, revenir à la valeur par défaut
         document.querySelector('header').style.marginTop = '50px';
-        // Afficher les filtres si l'utilisateur n'est pas connecté
+
         const filters = document.getElementById('category-menu');
         if (filters) {
             filters.classList.remove('hidden');
         }
 
-        // Masquer les icônes d'édition
         const editIcons = document.querySelectorAll('.fa-pen-to-square');
         const editText = document.querySelector('.edit-text');
 
@@ -81,7 +72,6 @@ function enableEditMode() {
     const editIcon = document.querySelector('.edit-mode-bar i');
     const editText = document.querySelector('.edit-mode-bar span');
 
-    // Vérifie si l'élément existe avant de modifier son contenu
     if (editModeBar && editIcon && editText) {
         editModeBar.classList.remove('hidden');
         editIcon.classList.remove('hidden');
@@ -98,27 +88,22 @@ function disableEditMode() {
     const editIcons = document.querySelectorAll('.fa-pen-to-square');
     const editText = document.querySelector('.edit-text');
 
-    // Masquer la barre de mode édition
     if (editModeBar) {
         editModeBar.classList.add('hidden');
     }
 
-    // Afficher les filtres
     if (filters) {
         filters.classList.remove('hidden');
     }
 
-    // Masquer les icônes de modification
     if (editIcons.length > 0) {
         editIcons.forEach(icon => icon.classList.add('hidden'));
     }
 
-    // Masquer le texte Modifier
     if (editText) {
         editText.classList.add('hidden');
     }
 
-    // Remettre le lien Login
     const loginLink = document.querySelector('a[href="login.html"]');
     if (loginLink) {
         loginLink.textContent = "Login";
@@ -126,12 +111,22 @@ function disableEditMode() {
     }
 }
 
-// Fonction pour récupérer et afficher les travaux
+// Fonction pour récupérer les catégories
+async function fetchCategories() {
+    try {
+        allCategories = await apiRequest('categories');
+        generateCategoryMenu(allCategories);
+        fetchWorks();
+    } catch (error) {
+        console.error("Erreur lors de la récupération des catégories :", error);
+    }
+}
+
+// Fonction pour récupérer les travaux
 async function fetchWorks() {
     try {
         allWorks = await apiRequest('works');
         displayWorks(allWorks);
-        generateCategoryMenu(extractCategories(allWorks));
     } catch (error) {
         console.error("Erreur lors de la récupération des travaux :", error);
     }
@@ -141,50 +136,41 @@ async function fetchWorks() {
 function generateCategoryMenu(categories) {
     const menuContainer = document.querySelector('#category-menu');
     menuContainer.innerHTML = '';
+
+    // Ajouter l'option "Tous"
     const allOption = document.createElement('button');
     allOption.textContent = 'Tous';
     allOption.classList.add('category-button', 'active');
     allOption.addEventListener('click', () => {
-        filterWorksByCategory(null);
+        displayWorks(allWorks);
         setActiveButton(allOption);
     });
     menuContainer.appendChild(allOption);
 
-    categories.forEach(({ id, name }) => {
+    // Ajouter les catégories
+    categories.forEach(category => {
         const categoryOption = document.createElement('button');
-        categoryOption.textContent = name;
+        categoryOption.textContent = category.name;
         categoryOption.classList.add('category-button');
         categoryOption.addEventListener('click', () => {
-            filterWorksByCategory(id);
+            const filteredWorks = allWorks.filter(work => work.category && work.category.id === category.id);
+            displayWorks(filteredWorks);
             setActiveButton(categoryOption);
         });
         menuContainer.appendChild(categoryOption);
     });
 }
 
-// Fonction pour extraire les catégories uniques
-function extractCategories(works) {
-    const categories = new Map();
-    works.forEach(work => {
-        if (work.category) {
-            categories.set(work.category.id, work.category.name);
-        }
-    });
-    return Array.from(categories, ([id, name]) => ({ id, name }));
-}
-
-// Fonction pour filtrer les travaux
-function filterWorksByCategory(categoryId) {
-    const filteredWorks = categoryId
-        ? allWorks.filter(work => work.category && work.category.id === categoryId)
-        : allWorks;
-    displayWorks(filteredWorks);
-}
-
 // Fonction pour afficher les travaux dans la galerie
 function displayWorks(works) {
     const gallery = document.querySelector('#gallery');
     gallery.innerHTML = '';
+
+    if (works.length === 0) {
+        gallery.innerHTML = '<p>Aucun élément à afficher dans cette catégorie.</p>';
+        return;
+    }
+
     works.forEach(work => {
         const workElement = document.createElement('div');
         workElement.classList.add('work');
@@ -213,5 +199,5 @@ function logout(event) {
 // Appeler les fonctions au chargement
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
-    fetchWorks();
+    fetchCategories();
 });
