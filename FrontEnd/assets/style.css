@@ -356,6 +356,10 @@ main {
 	gap: 11px;
 }
 
+.edit-container span {
+	cursor: pointer;
+}
+
 /*********** GALLERY ***********/
 
 .gallery {
@@ -373,46 +377,54 @@ main {
 /*********** CONTACT ***********/
 
 #contact {
-	width: 379px;
-	margin: auto;
+    width: 380px;
+    margin: auto;
+    text-align: center;
 }
-#contact > * {
-	text-align: center;
+
+#contact h2 {
+    margin-bottom: 20px;
 }
-#contact h2{
-	margin-bottom: 20px;
-}
+
 #contact form {
-	text-align: left;
-	margin-top:30px;
-	display: flex;
-	flex-direction: column;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    text-align: left;
 }
 
-#contact input {
-	height: 50px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-#contact label {
-	margin: 2em 0 1em 0;
-}
+#contact input,
 #contact textarea {
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 10px;
 }
 
-input[type="submit"]{
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
-	margin : 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
-	cursor:pointer;
+#contact textarea {
+    height: 174px;
+    resize: none;
+}
+
+#contact button {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: white;
+    background-color: #1D6154;
+    margin: 2em auto;
+    width: 180px;
+    height: 50px;
+    text-align: center;
+    border-radius: 60px;
+    border: none;
+    cursor: pointer;
+}
+
+#contact p {
+    margin-bottom: 20px;
+    font-size: 1em;
 }
 
 /*********** FOOTER ***********/
