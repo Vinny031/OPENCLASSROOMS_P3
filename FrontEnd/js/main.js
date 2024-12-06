@@ -1,10 +1,12 @@
 const apiUrl = 'http://localhost:5678/api/works';
 
-// Variable globale pour stocker les travaux
+/*********** Variable globale pour stocker les travaux ***********/
+
 let allWorks = [];
 let allCategories = [];
 
-// Fonction utilitaire pour les appels API
+/*********** Fonction utilitaire pour les appels API ***********/
+
 async function apiRequest(endpoint, options = {}) {
     try {
         const response = await fetch(`http://localhost:5678/api/${endpoint}`, options);
@@ -16,7 +18,8 @@ async function apiRequest(endpoint, options = {}) {
     }
 }
 
-// Vérifie si l'utilisateur est connecté
+/*********** Vérifie si l'utilisateur est connecté ***********/
+
 function checkAuth() {
     const token = localStorage.getItem("authToken");
 
@@ -106,7 +109,7 @@ function disableEditMode() {
 
     const loginLink = document.querySelector('a[href="login.html"]');
     if (loginLink) {
-        loginLink.textContent = "Login";
+        loginLink.textContent = "login";
         loginLink.setAttribute('href', 'login.html');
     }
 }
@@ -180,6 +183,75 @@ function displayWorks(works) {
             <p>${work.description}</p>
         `;
         gallery.appendChild(workElement);
+    });
+}
+
+/*********** Activation de la modale ***********/
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    /*********** Sélectionner le texte "modifier" ***********/
+
+    const editText = document.querySelector('.edit-container .edit-text');
+    const modalContainer = document.getElementById('modal-container');
+    const closeModalButton = document.getElementById('close-modal');
+
+    /*********** Vérifier si les éléments existent ***********/
+
+    if (editText && modalContainer && closeModalButton) {
+
+        /*********** Ouvrir la modale au clic sur le texte "modifier" ***********/
+
+        editText.addEventListener('click', () => {
+            modalContainer.classList.remove('hidden');
+            displayWorksInModal(allWorks);
+        });
+
+        /*********** Fermer la modale au clic sur le bouton de fermeture ***********/
+
+        closeModalButton.addEventListener('click', () => {
+            modalContainer.classList.add('hidden');
+        });
+
+        /*********** Fermer la modale en cliquant à l'extérieur de la fenêtre modale ***********/
+
+        modalContainer.addEventListener('click', (event) => {
+            if (event.target === modalContainer) {
+                modalContainer.classList.add('hidden');
+            }
+        });
+    } else {
+        console.error("Un ou plusieurs éléments nécessaires sont manquants.");
+    }
+});
+
+/*********** Fonction pour afficher les travaux dans la modale ***********/
+
+function displayWorksInModal(works) {
+    const modalWorksContainer = document.getElementById('modal-works');
+    modalWorksContainer.innerHTML = '';  // Réinitialiser le contenu à chaque fois
+
+    works.forEach(work => {
+        const workElement = document.createElement('div');
+        workElement.classList.add('work-item');
+        
+        // Créer une balise <img> pour afficher l'image
+        const imageElement = document.createElement('img');
+        imageElement.src = work.imageUrl;
+        imageElement.alt = work.title;
+
+        // Ajouter l'image à l'élément workItem
+        workElement.appendChild(imageElement);
+
+        // Créer le carré noir avec l'icône de la poubelle
+        const trashIcon = document.createElement('div');
+        trashIcon.classList.add('trash-icon');
+
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-trash-can');
+        trashIcon.appendChild(icon);
+        workElement.appendChild(trashIcon);
+        modalWorksContainer.appendChild(workElement);
     });
 }
 
