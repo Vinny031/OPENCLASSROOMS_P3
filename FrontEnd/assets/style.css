@@ -95,10 +95,19 @@ h2{
 }
 
 h3 {
-font-family: "Work Sans";
-font-size: 26px;
-font-style: normal;
-font-weight: 400;
+    font-family: "Work Sans";
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+h4 {
+    font-family: "Work Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    height: 15px;
+    margin-top: 7px;
 }
 
 header {
@@ -148,7 +157,7 @@ nav a {
     font-weight: 400;
     color: #000;
     transition: color 0.3s ease;
-	cursor: default;
+	cursor: pointer;
 }
 
 nav a.active {
@@ -167,6 +176,7 @@ nav i {
 
 nav i:hover {
     transform: scale(1.3); 
+    cursor: pointer;
 }
 
 /*********** BARRE EDITION TOP ***********/
@@ -260,8 +270,7 @@ main {
   }
   
 .category-button:hover {
-	background-color: #B1663C;
-	color: white;
+	background: #0E2F28;
   }
   
 .category-button span {
@@ -393,8 +402,9 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content:  space-between;
-    padding: 60px 105px 45px;
-    width: 630px;
+    padding: 60px 5vw 45px;
+    width: 37%;
+    max-width: 630px;
     height: auto;
     background: #FFFFFF;
     border-radius: 10px;
@@ -425,7 +435,7 @@ main {
 
 .modal-works {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); 
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
     gap: 6.5px;
     width: 100%;
 }
@@ -435,6 +445,11 @@ main {
     width: 78px;
     height: 104px;
     margin: 10px 0;
+    transition: transform 0.3s ease;
+}
+
+.work-item:hover{
+    transform: scale(1.05);
 }
 
 .work-item img {
@@ -480,6 +495,78 @@ main {
     border: none;
     cursor: pointer;
     margin-top: 38px; 
+    transition: background-color 0.3s ease;
+}
+
+.add-photo-button:hover {
+    background: #0E2F28;
+}
+
+#photo-form {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#photo-form i {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.form-field {
+    width: 420px;
+    margin-bottom: 20px;
+}
+
+.photo-input, .title-input, .category-select {
+    width: 100%;
+    height: 40px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.photo-input {
+    background: #E8F1F7;
+}
+
+.title-input, .category-select {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.submit-button {
+    width: 420px;
+    height: 51px;
+    background-color: #A7A7A7;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    font-weight: bold;
+    cursor: not-allowed;
+}
+
+.submit-button.active {
+    background-color: #1D6154;
+    cursor: pointer;
+}
+
+.submit-button:disabled {
+    background-color: #A7A7A7;
+}
+
+#photo-form.hidden {
+    display: none;
+}
+
+#modal-works.hidden {
+    display: none;
 }
 
 /*********** GALLERY ***********/
@@ -492,8 +579,19 @@ main {
 	grid-row-gap: 20px;
 }
 
-.gallery img {
-	width: 100%;
+.work {
+    display: inline-block;
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.work img {
+    width: 100%;
+}
+
+.work:hover{
+    transform: scale(1.03);
 }
 
 /*********** CONTACT ***********/
@@ -541,6 +639,9 @@ main {
     text-align: center;
     border-radius: 60px;
     border: none;
+}
+#contact button:hover {
+    background: #0E2F28;
     cursor: pointer;
 }
 
@@ -641,7 +742,8 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #B1663C;
+    background: #0E2F28;
+    cursor: pointer;
 }
 
 .forgot-password {
@@ -661,11 +763,11 @@ button[type="submit"]:hover {
 }
 
 .error-message {
-    color: #B1663C;
+    color: red;
     font-family: 'Work Sans', sans-serif;
     font-weight: 500;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 .js-error-message {
