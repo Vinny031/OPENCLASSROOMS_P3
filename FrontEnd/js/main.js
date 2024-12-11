@@ -71,7 +71,7 @@ function checkAuth() {
 
 /*********** ACTIVE LE MODE EDITION ***********/
 
-    function enableEditMode() {
+function enableEditMode() {
     const editModeBar = document.querySelector('.edit-mode-bar');
     const editIcon = document.querySelector('.edit-mode-bar i');
     const editText = document.querySelector('.edit-mode-bar span');
@@ -120,12 +120,19 @@ function disableEditMode() {
 
 async function fetchCategories() {
     try {
-        allCategories = await apiRequest('categories');
-        generateCategoryMenu(allCategories);
+        window.allCategories = await apiRequest('categories');
+        console.log("Catégories récupérées :", window.allCategories);
+        generateCategoryMenu(window.allCategories);
         fetchWorks();
     } catch (error) {
         console.error("Erreur lors de la récupération des catégories :", error);
     }
+}
+
+// Fonction pour exposer les catégories
+
+function getAllCategories() {
+    return allCategories;
 }
 
 /*********** RECUPERER LES TRAVAUX ***********/
@@ -146,6 +153,7 @@ function generateCategoryMenu(categories) {
     menuContainer.innerHTML = '';
 
     // Ajouter l'option "Tous"
+
     const allOption = document.createElement('button');
     allOption.textContent = 'Tous';
     allOption.classList.add('category-button', 'active');
@@ -156,6 +164,7 @@ function generateCategoryMenu(categories) {
     menuContainer.appendChild(allOption);
 
     // Ajouter les catégories
+
     categories.forEach(category => {
         const categoryOption = document.createElement('button');
         categoryOption.textContent = category.name;

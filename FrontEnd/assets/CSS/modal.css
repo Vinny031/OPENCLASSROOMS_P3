@@ -1,0 +1,264 @@
+/*********** MODALE ***********/
+
+.modal-page {
+    visibility: hidden;
+    position: absolute;
+    display: none;
+    opacity: 0;
+}
+
+.modal-page.active {
+    visibility: visible; 
+    position: relative; 
+    display: block;
+    opacity: 1;
+}
+
+#modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#modal-container.hidden {
+    display: none;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 5vw 45px;
+    width: 630px;
+    height: auto;
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    gap: 36px;
+}
+
+.close-button {
+    position: absolute;
+    top: 26px;
+    right: 30px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.back-button {
+    position: absolute;
+    top: 26px;
+    left: 30px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000000;
+    z-index: 1000;
+}
+
+.modal-title {
+    text-align: center;
+    color: #000000;
+}
+
+/* Galerie */
+#modal-gallery { 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+}
+
+.modal-works {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+    gap: 6.5px;
+    width: 100%;
+}
+
+.work-item {
+    position: relative;
+    width: 78px;
+    height: 104px;
+    margin: 10px 0;
+    transition: transform 0.3s ease;
+}
+
+.work-item:hover {
+    transform: scale(1.05);
+}
+
+.work-item img {
+    width: 100%;
+    height: auto;
+}
+
+.trash-icon {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 17px;
+    height: 17px;
+    background-color: #000000;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.trash-icon i {
+    color: #FFFFFF;
+    font-size: 11px;
+}
+
+.line {
+    width: 100%;
+    border-bottom: 1px solid #B3B3B3;
+    margin-top: 50px;
+}
+
+/* Boutons */
+.add-photo-button {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+    background-color: #1D6154;
+    width: 237px;
+    height: 36px;
+    text-align: center;
+    border-radius: 60px;
+    border: none;
+    cursor: pointer;
+    margin-top: 38px; 
+    transition: background-color 0.3s ease;
+}
+
+.add-photo-button:hover {
+    background: #0E2F28;
+}
+
+.submit-button {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    width: 237px;
+    height: 36px;
+    background-color: #A7A7A7;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 38px; 
+    transition: background-color 0.3s ease;
+}
+
+.submit-button.active {
+    background-color: #1D6154;
+    cursor: pointer;
+}
+
+.submit-button:disabled {
+    background-color: #A7A7A7;
+    cursor: default;
+}
+
+#modal-works.hidden {
+    display: none;
+}
+
+/* Bouton retour dans la modale */
+.back-button {
+    position: absolute;
+    top: 26px;
+    left: 30px;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+/* Zone pour ajouter une photo */
+#upload-section {
+    position: relative;
+    padding: 19px 124px;
+    width: 100%;
+    height: auto;
+    background: #E8F1F7;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#upload-section i {
+    font-size: 76px;
+    color: #B9C5CC;
+}
+
+#add-photo-button-form {
+    width: 173px;
+    height: 36px;
+    background: #CBD6DC;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #306685;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#add-photo-button-form:hover {
+    transform: scale(1.03);
+}
+
+#upload-section p {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 10px;
+    color: #444444;
+    text-align: center;
+}
+
+.form-field {
+    width: 420px;
+    height: 51px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.form-field label {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444444;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-field input, 
+.form-field select {
+    width: 100%;
+    height: 40px;
+    border-radius: 3px;
+    border: 0px solid #ccc;
+    padding: 10px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
