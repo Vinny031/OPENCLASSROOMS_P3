@@ -18,104 +18,6 @@ async function apiRequest(endpoint, options = {}) {
     }
 }
 
-/*********** VERIFIE SI LE USER EST CONNECTE VIA LE TOKEN ***********/
-
-function checkAuth() {
-    const token = localStorage.getItem("authToken");
-
-    if (token) {
-        enableEditMode();
-        document.querySelector('header').style.marginTop = '97px';
-
-        const filters = document.getElementById('category-menu');
-        if (filters) {
-            filters.classList.add('hidden');
-        }
-
-        const editIcons = document.querySelectorAll('.fa-pen-to-square');
-        const editText = document.querySelector('.edit-text');
-
-        if (editIcons.length > 0) {
-            editIcons.forEach(icon => icon.classList.remove('hidden'));
-        }
-        if (editText) {
-            editText.classList.remove('hidden');
-        }
-
-        const loginLink = document.querySelector('a[href="login.html"]');
-        if (loginLink) {
-            loginLink.textContent = "logout";
-            loginLink.setAttribute('href', '#');
-            loginLink.addEventListener('click', logout);
-        }
-    } else {
-        disableEditMode();
-        document.querySelector('header').style.marginTop = '50px';
-
-        const filters = document.getElementById('category-menu');
-        if (filters) {
-            filters.classList.remove('hidden');
-        }
-
-        const editIcons = document.querySelectorAll('.fa-pen-to-square');
-        const editText = document.querySelector('.edit-text');
-
-        if (editIcons.length > 0) {
-            editIcons.forEach(icon => icon.classList.add('hidden'));
-        }
-        if (editText) {
-            editText.classList.add('hidden');
-        }
-    }
-}
-
-/*********** ACTIVE LE MODE EDITION ***********/
-
-function enableEditMode() {
-    const editModeBar = document.querySelector('.edit-mode-bar');
-    const editIcon = document.querySelector('.edit-mode-bar i');
-    const editText = document.querySelector('.edit-mode-bar span');
-
-    if (editModeBar && editIcon && editText) {
-        editModeBar.classList.remove('hidden');
-        editIcon.classList.remove('hidden');
-        editText.classList.remove('hidden');
-    } else {
-        console.error("L'un des éléments pour activer le mode édition est manquant.");
-    }
-}
-
-/*********** DESACTIVE LE MODE EDITION ***********/
-
-function disableEditMode() {
-    const editModeBar = document.querySelector('.edit-mode-bar');
-    const filters = document.getElementById('category-menu');
-    const editIcons = document.querySelectorAll('.fa-pen-to-square');
-    const editText = document.querySelector('.edit-text');
-
-    if (editModeBar) {
-        editModeBar.classList.add('hidden');
-    }
-
-    if (filters) {
-        filters.classList.remove('hidden');
-    }
-
-    if (editIcons.length > 0) {
-        editIcons.forEach(icon => icon.classList.add('hidden'));
-    }
-
-    if (editText) {
-        editText.classList.add('hidden');
-    }
-
-    const loginLink = document.querySelector('a[href="login.html"]');
-    if (loginLink) {
-        loginLink.textContent = "login";
-        loginLink.setAttribute('href', 'login.html');
-    }
-}
-
 /*********** RECUPERER LES CATEGORIES ***********/
 
 async function fetchCategories() {
@@ -207,13 +109,48 @@ function setActiveButton(button, buttonsSelector = '.category-button') {
     button.classList.add('active');
 }
 
-/*********** DECONNECTION USER ***********/
+/*********** CONTACT FORM ***********/
 
-function logout(event) {
-    event.preventDefault();
-    localStorage.removeItem("authToken");
-    window.location.href = "index.html";
-}
+    // Générer dynamiquement la section contact
+    const contactSection = document.getElementById("contact");
+    contactSection.innerHTML = `
+        <h2>Contact</h2>
+        <p>Vous avez un projet ? Discutons-en !</p>
+        <form action="#" method="post">
+            <label for="name">Nom</label>
+            <input type="text" id="name" placeholder="" required>
+            
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="" required>
+            
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="" required></textarea>
+        </form>
+            <button type="submit">Envoyer</button>
+        
+    `;
+
+    // Fonction pour ajouter un comportement au formulaire
+    function attachContactFormHandler() {
+    const contactForm = document.querySelector("#contact form");
+
+    contactForm.addEventListener("submit", (event) => {
+        event.preventDefault(); // Empêche l’envoi du formulaire par défaut
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const message = document.getElementById("message").value;
+
+        if (name && email && message) {
+            console.log("Nom :", name);
+            console.log("Email :", email);
+            console.log("Message :", message);
+            alert("Merci pour votre message ! Nous vous répondrons rapidement.");
+        } else {
+            alert("Veuillez remplir tous les champs.");
+        }
+    });
+    }
 
 /*********** APPEL DES FONCTIONS AU CHARGEMENT ***********/
 
