@@ -87,7 +87,14 @@ function displayWorks(works) {
     gallery.innerHTML = '';
 
     if (works.length === 0) {
-        gallery.innerHTML = '<p>Aucun élément à afficher dans cette catégorie.</p>';
+        gallery.innerHTML = `
+        <div class="error">
+            <div class="error-icon">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="error-category-text">Pas de travaux dans cette catégorie.</div>
+        </div>
+        `;
         return;
     }
 
