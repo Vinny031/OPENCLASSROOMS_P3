@@ -114,6 +114,8 @@ h4 {
     margin-top: 7px;
 }
 
+/*********** HEADER ***********/
+
 header {
     display: flex;
     justify-content: space-between;
@@ -139,18 +141,12 @@ header h1 span {
     color: #93532F;
 }
 
-nav {
-    display: flex;
-}
-
 nav ul {
     display: flex;
     gap: 44px;
     align-items: center;
-    justify-content: center;
-}
-
-nav li {
+    margin: 0;
+    padding: 0;
     list-style: none;
 }
 
@@ -159,21 +155,17 @@ nav a {
     font-size: 16px;
     font-weight: 400;
     color: #000;
-    transition: color 0.3s ease;
     cursor: pointer;
+    transition: font-weight 0.3s ease;
 }
 
-nav a.active {
-    font-weight: 700;
-}
-
+nav a.active,
 nav a:hover {
-    font-weight: 700;
+    font-weight: bold;
 }
 
 nav i {
     font-size: 20px;
-    cursor: default;
     transition: transform 0.3s ease;
 }
 
@@ -211,18 +203,19 @@ nav i:hover {
 /*********** MAIN ***********/
 
 main {
-    margin: 0 245px; 
-    flex: 1; 
+    margin: 0 245px;
+    flex: 1;
 }
 
 #introduction {
     display: flex;
     align-items: center;
-    margin: 140px 0; 
+    margin: 140px 0;
 }
 
-#introduction figure {
-    flex: 1
+#introduction figure, 
+#introduction article {
+    flex: 1;
 }
 
 #introduction img {
@@ -231,11 +224,8 @@ main {
     width: 80%;
 }
 
-#introduction article {
-    flex: 1
-}
-
-#introduction h2 {
+#introduction h2, 
+#introduction p {
     margin-bottom: 1em;
 }
 
@@ -288,9 +278,9 @@ main {
 }
 
 .category-button {
-    padding: 10px 20px;
-    font-size: 1.2em;
-    height: 37px;
+    height: 36px;
+    padding: 10px;
+    min-width: 100px;
     border-radius: 60px;
     border: 1px solid #1D6154;
     background-color: transparent;
@@ -300,7 +290,12 @@ main {
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Syne';
+    font-style: normal;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .category-button#all {
@@ -309,15 +304,9 @@ main {
 }
 
 .category-button:hover {
-    background: #0E2F28;
-}
-
-.category-button span {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
-    text-align: center;
+    background-color: #1D6154;
+    color: white;
+    transform: scale(1.02);
 }
 
 .category-button.active {
@@ -325,73 +314,45 @@ main {
     color: white;
     border: 1px solid #1D6154;
     cursor: default;
-}
-
-#all span {
-    color: #FFFFFF;
-}
-
-.category-button#objets {
-    width: 100px;
-}
-
-.category-button#appartements {
-    width: 157px;
-}
-
-.category-button#hotels-restaurants {
-    width: 198px;
-}
-
-.category-button#all {
-    margin-left: 0;
-}
-
-.category-button#objets {
-    width: 100px;
-}
-
-.category-button#appartements {
-    width: 157px;
-}
-
-.category-button#hotels-restaurants {
-    width: 198px;
-}
-
-.category-button:hover {
-    background-color: #1D6154;
-    color: white;
-}
-
-#objets,
-#appartements,
-#hotels-restaurants,
-#all {
-    position: static;
-}
-
-#all {
-    margin-left: 20px;
-}
-
-#objets span, #appartements span, #hotels-restaurants span {
-    color: #1D6154;
-}
-
-#all span {
-    color: #FFFFFF;
+    transform: translateY(-3px);
 }
 
 /*********** GALLERY ***********/
 
-.gallery {
+#gallery {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-column-gap: 20px;
     grid-row-gap: 20px;
 }
+
+.error {
+    grid-column: 2;
+    width: 320px;
+    padding: 5px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    background: #1D6154;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px -3px #111;
+}
+
+.error-icon {
+    width: 20px;
+    height: 20px;
+    transform: translateY(+3px);
+    margin-right: 8px;
+    color: #fff;
+  }
+
+  .error-category-text {
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+  }
 
 .work {
     display: inline-block;
