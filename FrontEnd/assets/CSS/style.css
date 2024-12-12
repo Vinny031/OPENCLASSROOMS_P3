@@ -408,6 +408,93 @@ main {
     transform: scale(1.03);
 }
 
+/*********** CONTACT SECTION ***********/
+
+#contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 45px auto;
+    width: 500px;
+}
+
+#contact h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    color: #1D6154;
+    margin-bottom: 10px;
+}
+
+#contact p {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+    margin-bottom: 38px;
+}
+
+#contact form {
+    display: flex;
+    flex-direction: column;
+    width: 379px;
+    gap: 10px;
+}
+
+#contact label {
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 500;
+    color: #3D3D3D;
+    font-size: 14px;
+}
+
+#contact input, #contact textarea {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+    border: none;
+    background-color: #FFFFFF;
+    color: #333;
+    transition: border 0.3s ease;
+    margin-bottom: 30px;
+    box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+}
+
+#contact input:focus, #contact textarea:focus {
+    border-color: #1D6154;
+    outline: none;
+}
+
+#contact input {
+    height: 51px;
+}
+
+#contact textarea { 
+    height: 174px;
+    resize: none;
+}
+
+#contact button {
+    background-color: #1D6154;
+    text-align: center;
+    color: #fff;
+    width: 179px;
+    height: 36px;
+    border: none;
+    border-radius: 60px;
+    font-family: 'Syne';
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#contact button:hover {
+    background-color: #0e2f28;
+}
+
 /*********** FOOTER ***********/
 
 footer {
