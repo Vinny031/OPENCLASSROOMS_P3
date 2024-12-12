@@ -59,7 +59,7 @@ button[type="submit"] {
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 20px; /* Espacement au-dessus du bouton */
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;

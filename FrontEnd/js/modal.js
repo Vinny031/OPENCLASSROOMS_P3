@@ -248,27 +248,33 @@ document.addEventListener('DOMContentLoaded', function () {
     /*********** Fonction d'upload ***********/
 
     // Ajout du champ input pour le fichier (caché initialement)
+
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.id = 'photo-file';
-    fileInput.accept = '.jpg, .png'; // Limite aux fichiers JPG et PNG
-    fileInput.required = true; // Le fichier est requis
-    fileInput.style.display = 'none'; // Cache l'input, on l'affiche seulement quand le bouton est cliqué
+    fileInput.accept = '.jpg, .png';
+    fileInput.required = true;
+    fileInput.style.display = 'none';
 
     // Ajout du champ input à la section de téléchargement
+
     const uploadSection = document.getElementById('upload-section');
     uploadSection.appendChild(fileInput);
 
     // Lorsque l'utilisateur clique sur "Ajouter photo", on déclenche l'input
+
     const addPhotoButtonForm = document.getElementById('add-photo-button-form');
     addPhotoButtonForm.addEventListener('click', (event) => {
-        event.preventDefault(); // Empêche le comportement par défaut du bouton
-        fileInput.click(); // Ouvre la fenêtre de sélection de fichier
+        event.preventDefault();
+        fileInput.click();
     });
 
     // Fonction pour valider l'upload
+
     function validateFile(file) {
+
         // Vérifier le type de fichier
+
         const validTypes = ['image/jpeg', 'image/png'];
         if (!validTypes.includes(file.type)) {
             alert('Seuls les fichiers JPG et PNG sont autorisés.');
@@ -276,7 +282,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Vérifier la taille du fichier
-        const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
+
+        const maxSize = 4 * 1024 * 1024;
         if (file.size > maxSize) {
             alert('Le fichier ne doit pas dépasser 4 Mo.');
             return false;
@@ -286,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Écouter l'événement de changement sur l'input fichier
+
     fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
 
@@ -303,6 +311,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Lors de la soumission du formulaire (ajouter photo)
+
     uploadForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 

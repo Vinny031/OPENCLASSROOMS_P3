@@ -41,13 +41,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 5vw 45px;
+    padding: 60px 100px 45px;
     width: 630px;
-    height: auto;
+    height: 688px;
     background: #FFFFFF;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     gap: 36px;
+    overflow-y: auto; 
 }
 
 .close-button {
@@ -56,6 +57,7 @@
     right: 30px;
     font-size: 24px;
     cursor: pointer;
+    z-index: 2000;
 }
 
 .back-button {
@@ -64,8 +66,7 @@
     left: 30px;
     font-size: 24px;
     cursor: pointer;
-    color: #000000;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .modal-title {
