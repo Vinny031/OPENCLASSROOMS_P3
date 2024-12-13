@@ -41,9 +41,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 100px 45px;
     width: 630px;
-    height: 688px;
+    height: auto;
     background: #FFFFFF;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -55,18 +54,30 @@
     position: absolute;
     top: 26px;
     right: 30px;
-    font-size: 24px;
+    font-size: 21px;
     cursor: pointer;
-    z-index: 2000;
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+.close-button:hover {
+    cursor: pointer;
+    transform: scale(1.3);
 }
 
 .back-button {
     position: absolute;
     top: 26px;
     left: 30px;
-    font-size: 24px;
+    font-size: 21px;
     cursor: pointer;
-    z-index: 2000;
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+.back-button:hover {
+    cursor: pointer;
+    transform: scale(1.3);
 }
 
 .modal-title {
@@ -74,8 +85,8 @@
     color: #000000;
 }
 
-/* Galerie */
-#modal-gallery { 
+#modal-gallery {
+    padding: 60px 100px 45px; 
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -100,7 +111,7 @@
 }
 
 .work-item:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) rotate(-2deg);
 }
 
 .work-item img {
@@ -132,7 +143,6 @@
     margin-top: 50px;
 }
 
-/* Boutons */
 .add-photo-button {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
@@ -146,11 +156,100 @@
     border: none;
     cursor: pointer;
     margin-top: 38px; 
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .add-photo-button:hover {
     background: #0E2F28;
+    cursor: pointer;
+    transform: scale(1.02);
+}
+
+#modal-works.hidden {
+    display: none;
+}
+
+#upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#upload-section {
+    position: relative;
+    padding: 19px 124px;
+    width: 100%;
+    height: auto;
+    background: #E8F1F7;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.3s ease;
+}
+
+#upload-section i {
+    font-size: 76px;
+    color: #B9C5CC;
+}
+
+#add-photo-button-form {
+    width: 173px;
+    height: 36px;
+    background: #CBD6DC;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #306685;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#upload-section:hover {
+    transform: scale(1.03);
+}
+
+#upload-section p {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 10px;
+    color: #444444;
+    text-align: center;
+}
+
+.form-field {
+    width: 420px;
+    height: 51px;
+    margin-bottom: 50px;
+    margin-top: 30px;
+    transition: transform 0.3s ease;
+}
+
+.form-field:focus-within {
+    transform: scale(1.02);
+}
+
+.form-field label {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444444;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-field input, 
+.form-field select {
+    width: 100%;
+    height: 51px;
+    border-radius: 3px;
+    border: 0px solid #ccc;
+    padding: 10px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
 .submit-button {
@@ -177,89 +276,4 @@
 .submit-button:disabled {
     background-color: #A7A7A7;
     cursor: default;
-}
-
-#modal-works.hidden {
-    display: none;
-}
-
-/* Bouton retour dans la modale */
-.back-button {
-    position: absolute;
-    top: 26px;
-    left: 30px;
-    font-size: 21px;
-    cursor: pointer;
-}
-
-/* Zone pour ajouter une photo */
-#upload-section {
-    position: relative;
-    padding: 19px 124px;
-    width: 100%;
-    height: auto;
-    background: #E8F1F7;
-    border-radius: 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-#upload-section i {
-    font-size: 76px;
-    color: #B9C5CC;
-}
-
-#add-photo-button-form {
-    width: 173px;
-    height: 36px;
-    background: #CBD6DC;
-    border-radius: 50px;
-    border: none;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
-    color: #306685;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#add-photo-button-form:hover {
-    transform: scale(1.03);
-}
-
-#upload-section p {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 10px;
-    color: #444444;
-    text-align: center;
-}
-
-.form-field {
-    width: 420px;
-    height: 51px;
-    margin-bottom: 30px;
-    margin-top: 30px;
-}
-
-.form-field label {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    color: #444444;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-field input, 
-.form-field select {
-    width: 100%;
-    height: 40px;
-    border-radius: 3px;
-    border: 0px solid #ccc;
-    padding: 10px;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
