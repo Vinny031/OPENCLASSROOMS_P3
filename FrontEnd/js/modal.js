@@ -118,16 +118,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const separatorLine = document.createElement('div');
     separatorLine.classList.add('line');
-    uploadForm.appendChild(separatorLine);
+    modalAddPhoto.appendChild(separatorLine);
 
     const submitButton = document.createElement('button');
     submitButton.type = 'submit';
     submitButton.classList.add('submit-button');
     submitButton.disabled = true;
     submitButton.textContent = 'Valider';
-    uploadForm.appendChild(submitButton);
+    modalAddPhoto.appendChild(submitButton);
 
-    modalAddPhoto.appendChild(uploadForm);
 
     /*********** Fonctions génériques ***********/
 
@@ -150,34 +149,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function resetCategorySelect() {
         const categorySelect = document.getElementById('photo-category');
-        categorySelect.value = '';
+        if (categorySelect) {
+            categorySelect.value = '';
+        }
     }
 
     function closeModal() {
         modalContainer.style.opacity = '0';
         setTimeout(() => {
             modalContainer.classList.add('hidden');
-
-            // Réinitialiser le formulaire
-
+    
             const uploadForm = document.getElementById('upload-form');
             if (uploadForm) {
                 uploadForm.reset();
             }
     
-            // Réinitialiser le champ de fichier
-
             const fileInput = document.getElementById('photo-file');
             if (fileInput) {
                 fileInput.value = '';
             }
-
-            // Désactiver le bouton de validation
-
+    
             const submitButton = document.querySelector('.submit-button');
             if (submitButton) {
                 submitButton.disabled = true;
             }
+    
+            resetCategorySelect();
         }, 300);
     }
 
@@ -186,11 +183,34 @@ document.addEventListener('DOMContentLoaded', function () {
         modalPages.forEach(page => {
             page.classList.toggle('active', page.id === pageId);
         });
-
+    
         if (pageId === 'modal-add-photo') {
             backButton.style.display = 'block';
         } else {
             backButton.style.display = 'none';
+        }
+    
+        // Réinitialiser le formulaire lorsque l'on revient à la galerie
+        if (pageId === 'modal-gallery') {
+            const uploadForm = document.getElementById('upload-form');
+            if (uploadForm) {
+                uploadForm.reset();
+            }
+    
+            // Réinitialiser le champ de fichier
+            const fileInput = document.getElementById('photo-file');
+            if (fileInput) {
+                fileInput.value = '';  // Réinitialisation du champ de fichier
+            }
+    
+            // Désactiver le bouton de validation
+            const submitButton = document.querySelector('.submit-button');
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+    
+            // Réinitialiser le champ catégorie
+            resetCategorySelect();
         }
     }
 
