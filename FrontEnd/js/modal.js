@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    /*********** Créer et insérer dynamiquement la modale ***********/
+    /*********** GENERATION DE LA MODALE P1 ***********/
 
     const modalContainer = document.createElement('div');
     modalContainer.id = 'modal-container';
@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
     addPhotoButton.textContent = 'Ajouter une photo';
     modalGallery.appendChild(addPhotoButton);
 
+    /*********** GENERATION DE LA MODALE P2 ***********/
+
     const modalAddPhoto = document.createElement('div');
     modalAddPhoto.id = 'modal-add-photo';
     modalAddPhoto.classList.add('modal-page');
@@ -60,25 +62,71 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const uploadForm = document.createElement('form');
     uploadForm.id = 'upload-form';
-    uploadForm.innerHTML = `
-    <div id="upload-section">
-        <i class="fa-regular fa-image"></i>
-        <button id="add-photo-button-form">+ Ajouter photo</button>
-        <p>jpg, png : 4mo max</p>
-    </div>
-    <div class="form-field">
-        <label for="photo-title">Titre</label>
-        <input type="text" id="photo-title" placeholder="" required>
-    </div>
-    <div class="form-field">
-        <label for="photo-category">Catégorie</label>
-        <select id="photo-category" required>
-            <option value="">Sélectionner une catégorie</option>
-        </select>
-    </div>
-    <div class="line"></div>
-    <button type="submit" class="submit-button" disabled>Valider</button>
-    `;
+    modalAddPhoto.appendChild(uploadForm);
+
+    const uploadSectionContainer = document.createElement('div');
+    uploadSectionContainer.id = 'upload-section';
+    uploadForm.appendChild(uploadSectionContainer);
+
+    const uploadIcon = document.createElement('i');
+    uploadIcon.classList.add('fa-regular', 'fa-image');
+    uploadSectionContainer.appendChild(uploadIcon);
+
+    const addNewPhotoButton = document.createElement('button');
+    addNewPhotoButton.id = 'add-photo-button-form';
+    addNewPhotoButton.textContent = '+ Ajouter photo';
+    uploadSectionContainer.appendChild(addNewPhotoButton);
+
+    const uploadDescription = document.createElement('p');
+    uploadDescription.textContent = 'jpg, png : 4mo max';
+    uploadSectionContainer.appendChild(uploadDescription);
+
+    const titleField = document.createElement('div');
+    titleField.classList.add('form-field');
+    uploadForm.appendChild(titleField);
+
+    const titleLabel = document.createElement('label');
+    titleLabel.setAttribute('for', 'photo-title');
+    titleLabel.textContent = 'Titre';
+    titleField.appendChild(titleLabel);
+
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.id = 'photo-title';
+    titleInput.placeholder = '';
+    titleInput.required = true;
+    titleField.appendChild(titleInput);
+
+    const categoryField = document.createElement('div');
+    categoryField.classList.add('form-field');
+    uploadForm.appendChild(categoryField);
+
+    const categoryLabel = document.createElement('label');
+    categoryLabel.setAttribute('for', 'photo-category');
+    categoryLabel.textContent = 'Catégorie';
+    categoryField.appendChild(categoryLabel);
+
+    const categorySelect = document.createElement('select');
+    categorySelect.id = 'photo-category';
+    categorySelect.required = true;
+    categoryField.appendChild(categorySelect);
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Sélectionner une catégorie';
+    categorySelect.appendChild(defaultOption);
+
+    const separatorLine = document.createElement('div');
+    separatorLine.classList.add('line');
+    uploadForm.appendChild(separatorLine);
+
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.classList.add('submit-button');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Valider';
+    uploadForm.appendChild(submitButton);
+
     modalAddPhoto.appendChild(uploadForm);
 
     /*********** Fonctions génériques ***********/

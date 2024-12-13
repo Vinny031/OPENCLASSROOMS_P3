@@ -427,14 +427,20 @@ main {
     flex-direction: column;
     width: 379px;
     gap: 10px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     transition: transform 0.3s ease;
 }
 
-#contact form:focus-within {
+.contact-form:focus-within {
     transform: scale(1.02);
 }
 
-#contact label {
+.contact-form label {
     font-family: 'Work Sans';
     font-style: normal;
     font-weight: 500;
@@ -442,28 +448,29 @@ main {
     font-size: 14px;
 }
 
-#contact input, #contact textarea {
+.contact-form input, .contact-form textarea {
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     padding: 12px;
     border: none;
     background-color: #FFFFFF;
     color: #333;
-    transition: border 0.3s ease;
     margin-bottom: 30px;
     box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+    border-radius: 5px;
+    
 }
 
-#contact input:focus, #contact textarea:focus {
-    border-color: #1D6154;
+.contact-form:focus, .contact-form textarea:focus {
+    border: 2px solid; 
     outline: none;
 }
 
-#contact input {
+.contact-form input {
     height: 51px;
 }
 
-#contact textarea { 
+.contact-form textarea { 
     height: 174px;
     resize: none;
 }
