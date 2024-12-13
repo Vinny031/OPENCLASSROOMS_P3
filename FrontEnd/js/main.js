@@ -119,30 +119,36 @@ function setActiveButton(button, buttonsSelector = '.category-button') {
 /*********** CONTACT FORM ***********/
 
     // Générer dynamiquement la section contact
+
     const contactSection = document.getElementById("contact");
     contactSection.innerHTML = `
         <h2>Contact</h2>
         <p>Vous avez un projet ? Discutons-en !</p>
         <form action="#" method="post">
-            <label for="name">Nom</label>
-            <input type="text" id="name" placeholder="" required>
-            
-            <label for="email">E-mail</label>
-            <input type="email" id="email" placeholder="" required>
-            
-            <label for="message">Message</label>
-            <textarea id="message" placeholder="" required></textarea>
+            <div class="contact-form">
+                <label for="name">Nom</label>
+                <input type="text" id="name" placeholder="" required>
+            </div>
+            <div class="contact-form">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="" required>
+            </div>
+            <div class="contact-form">
+                <label for="message">Message</label>
+                <textarea id="message" placeholder="" required></textarea>
+            </div>
         </form>
             <button type="submit">Envoyer</button>
-        
+
     `;
 
     // Fonction pour ajouter un comportement au formulaire
+
     function attachContactFormHandler() {
     const contactForm = document.querySelector("#contact form");
 
     contactForm.addEventListener("submit", (event) => {
-        event.preventDefault(); // Empêche l’envoi du formulaire par défaut
+        event.preventDefault();
 
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
