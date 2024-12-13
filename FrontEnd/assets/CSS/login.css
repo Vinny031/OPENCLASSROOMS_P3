@@ -22,6 +22,11 @@
     gap: 20px;
     width: 100%;
     max-width: 400px;
+    transition: transform 0.3s ease;
+}
+
+.login-form:focus-within {
+    transform: scale(1.02);
 }
 
 .form-label {
@@ -58,7 +63,7 @@ button[type="submit"] {
     font-weight: 700;
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     margin-top: 20px;
     display: flex;
     align-items: center;
@@ -70,6 +75,11 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background: #0E2F28;
     cursor: pointer;
+    transform: scale(1.02);
+}
+
+button[type="submit"]:active {
+    transform: translateY(-1px);
 }
 
 .forgot-password {

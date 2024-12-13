@@ -14,8 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeModalButton = document.createElement('span');
     closeModalButton.id = 'close-modal';
     closeModalButton.classList.add('close-button');
-    closeModalButton.innerHTML = '&times;';
+    closeModalButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
     modal.appendChild(closeModalButton);
+
+    const backButton = document.createElement('span');
+    backButton.classList.add('back-button');
+    backButton.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
+    backButton.style.display = 'none'; 
+    modal.appendChild(backButton);
 
     const modalGallery = document.createElement('div');
     modalGallery.id = 'modal-gallery';
@@ -47,10 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
     modalAddPhoto.classList.add('modal-page');
     modal.appendChild(modalAddPhoto);
 
-    const backButton = document.createElement('i');
-    backButton.classList.add('fa-solid', 'fa-arrow-left', 'back-button');
-    modalAddPhoto.appendChild(backButton);
-
     const addPhotoTitle = document.createElement('h3');
     addPhotoTitle.classList.add('modal-title');
     addPhotoTitle.textContent = 'Ajout photo';
@@ -71,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="form-field">
         <label for="photo-category">Catégorie</label>
         <select id="photo-category" required>
-            <option value="Sélectionner une catégorie">Sélectionner une catégorie</option>
+            <option value="">Sélectionner une catégorie</option>
         </select>
     </div>
     <div class="line"></div>
@@ -92,7 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (pageId === 'modal-add-photo') {
-            resetCategorySelect();
+            backButton.style.display = 'block';
+        } else {
+            backButton.style.display = 'none';
         }
     }
 
@@ -134,6 +138,12 @@ document.addEventListener('DOMContentLoaded', function () {
         modalPages.forEach(page => {
             page.classList.toggle('active', page.id === pageId);
         });
+
+        if (pageId === 'modal-add-photo') {
+            backButton.style.display = 'block';
+        } else {
+            backButton.style.display = 'none';
+        }
     }
 
     function populateCategories(categories) {
@@ -299,11 +309,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (file) {
             if (validateFile(file)) {
-                // Si le fichier est valide, activer le bouton de validation
                 const submitButton = document.querySelector('.submit-button');
                 submitButton.disabled = false;
             } else {
-                // Sinon désactiver le bouton de validation
                 const submitButton = document.querySelector('.submit-button');
                 submitButton.disabled = true;
             }
