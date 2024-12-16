@@ -493,7 +493,6 @@ main {
 
 #contact button:hover {
     background-color: #0e2f28;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
     color: #fff;
     transform: scale(1.02);
 }
