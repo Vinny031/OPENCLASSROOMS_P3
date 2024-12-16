@@ -351,15 +351,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validateFile(file) {
 
-        // Vérifier le type de fichier
-
         const validTypes = ['image/jpeg', 'image/png'];
         if (!validTypes.includes(file.type)) {
             alert('Seuls les fichiers JPG et PNG sont autorisés.');
             return false;
         }
-
-        // Vérifier la taille du fichier
 
         const maxSize = 4 * 1024 * 1024;
         if (file.size > maxSize) {
@@ -370,21 +366,31 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    // Écouter l'événement de changement sur l'input fichier
+    // Fonction pour vérifier la validité de tout le formulaire
 
-    fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
+    function checkFormValidity() {
+        const file = fileInput.files[0];
+        const title = titleInput.value.trim();
+        const category = categorySelect.value;
+    
+        const isFileValid = file && validateFile(file);
+        const isTitleValid = title.length > 0;
+        const isCategoryValid = category !== '';
 
-        if (file) {
-            if (validateFile(file)) {
-                const submitButton = document.querySelector('.submit-button');
-                submitButton.disabled = false;
-            } else {
-                const submitButton = document.querySelector('.submit-button');
-                submitButton.disabled = true;
-            }
+        submitButton.disabled = !(isFileValid && isTitleValid && isCategoryValid);
+
+        if (!submitButton.disabled) {
+            submitButton.classList.add('active');
+        } else {
+            submitButton.classList.remove('active');
         }
-    });
+    }
+    
+    // Événements pour valider le formulaire lors de changements
+
+    fileInput.addEventListener('change', checkFormValidity);
+    titleInput.addEventListener('input', checkFormValidity);
+    categorySelect.addEventListener('change', checkFormValidity);
 
     // Lors de la soumission du formulaire (ajouter photo)
 
@@ -418,6 +424,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const newWork = await response.json();
                 allWorks.push(newWork);
                 displayWorksInModal(allWorks);
+                uploadForm.reset();
+                fileInput.value = '';
+                submitButton.disabled = true;
                 closeModal();
             } else {
                 console.error("Erreur lors de l'upload de la photo");
