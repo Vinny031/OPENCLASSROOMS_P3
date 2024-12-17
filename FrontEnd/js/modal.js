@@ -300,28 +300,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /*********** Supprimer un travail ***********/
-
-    async function deleteWork(workId) {
-        try {
-            const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error("Erreur lors de la suppression du travail");
-            }
-
-            allWorks = allWorks.filter(work => work.id !== workId);
-            displayWorksInModal(allWorks);
-        } catch (error) {
-            console.error("Erreur lors de la suppression :", error);
-        }
-    }
-
     /*********** Chargement initial ***********/
 
     loadCategoriesFromMain();
@@ -417,17 +395,17 @@ document.addEventListener('DOMContentLoaded', function () {
     
                 // Réinitialiser le contenu de uploadSection et afficher l'aperçu d'image
                 const uploadSection = document.getElementById('upload-section');
-                uploadSection.innerHTML = '';  // Nettoyer le contenu actuel
-                uploadSection.appendChild(previewImage); // Ajouter l'aperçu de l'image
+                uploadSection.innerHTML = '';
+                uploadSection.appendChild(previewImage);
     
-                checkFormValidity(); // Vérification de la validité du formulaire
+                checkFormValidity();
             };
             reader.readAsDataURL(file);
         } else {
             previewImage.style.display = 'none';
-            resetUploadModal(); // Réinitialiser si le fichier est invalide
+            resetUploadModal();
         }
-        checkFormValidity();  // Mettre à jour l'état du formulaire
+        checkFormValidity();
     });
 
     titleInput.addEventListener('input', checkFormValidity);
@@ -483,21 +461,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const reader = new FileReader();
             reader.onload = function(e) {
                 previewImage.src = e.target.result;
-                previewImage.style.display = 'block';  // Afficher l'aperçu de l'image
+                previewImage.style.display = 'block';
     
                 // Réinitialiser le contenu de uploadSection et afficher l'aperçu d'image
                 const uploadSection = document.getElementById('upload-section');
-                uploadSection.innerHTML = '';  // Nettoyer le contenu actuel
-                uploadSection.appendChild(previewImage); // Ajouter l'aperçu de l'image
+                uploadSection.innerHTML = '';
+                uploadSection.appendChild(previewImage);
     
-                checkFormValidity(); // Vérification de la validité du formulaire
+                checkFormValidity();
             };
             reader.readAsDataURL(file);
         } else {
             previewImage.style.display = 'none';
-            resetUploadModal(); // Réinitialiser si le fichier est invalide
+            resetUploadModal();
         }
-        checkFormValidity();  // Mettre à jour l'état du formulaire
+        checkFormValidity();
     });
 
     // Sortie de la modale avec bouton Esc
