@@ -1,23 +1,68 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     const main = document.getElementById("login-html");
-    main.innerHTML = `
-        <div class="login-page">
-            <h2 class="login-title">Log In</h2>
-            <form class="login-form">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" name="email" class="form-input js-email" required>
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" name="password" class="form-input js-password" required>
-                <button type="submit" class="btn-submit">Se connecter</button>
-                <a href="#" class="forgot-password">Mot de passe oublié</a>
-            </form>
-            <div class="error-message js-error-message" style="display: none;"></div>
-        </div>
-    `;
+
+    // Création des éléments
+    const loginPage = document.createElement("div");
+    loginPage.className = "login-page";
+
+    const loginTitle = document.createElement("h2");
+    loginTitle.className = "login-title";
+    loginTitle.textContent = "Log In";
+
+    const loginForm = document.createElement("form");
+    loginForm.className = "login-form";
+
+    const emailLabel = document.createElement("label");
+    emailLabel.htmlFor = "email";
+    emailLabel.className = "form-label";
+    emailLabel.textContent = "E-mail";
+
+    const emailInput = document.createElement("input");
+    emailInput.type = "email";
+    emailInput.name = "email";
+    emailInput.className = "form-input js-email";
+    emailInput.required = true;
+
+    const passwordLabel = document.createElement("label");
+    passwordLabel.htmlFor = "password";
+    passwordLabel.className = "form-label";
+    passwordLabel.textContent = "Mot de passe";
+
+    const passwordInput = document.createElement("input");
+    passwordInput.type = "password";
+    passwordInput.name = "password";
+    passwordInput.className = "form-input js-password";
+    passwordInput.required = true;
+
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.className = "btn-submit";
+    submitButton.textContent = "Se connecter";
+
+    const forgotPasswordLink = document.createElement("a");
+    forgotPasswordLink.href = "#";
+    forgotPasswordLink.className = "forgot-password";
+    forgotPasswordLink.textContent = "Mot de passe oublié";
+
+    const errorMessage = document.createElement("div");
+    errorMessage.className = "error-message js-error-message";
+    errorMessage.style.display = "none";
+
+    loginForm.appendChild(emailLabel);
+    loginForm.appendChild(emailInput);
+    loginForm.appendChild(passwordLabel);
+    loginForm.appendChild(passwordInput);
+    loginForm.appendChild(submitButton);
+    loginForm.appendChild(forgotPasswordLink);
+    loginPage.appendChild(loginTitle);
+    loginPage.appendChild(loginForm);
+    loginPage.appendChild(errorMessage);
+
+    main.appendChild(loginPage);
 
     attachLoginHandlers();
 });
+
 
 // Fonction pour attacher les gestionnaires d’événements
 
