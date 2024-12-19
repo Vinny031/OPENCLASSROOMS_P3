@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (pageId === 'modal-add-photo') {
             backButton.style.display = 'block';
     
-        // Réinitialiser le formulaire lorsque l'on revient à la galerie
         if (pageId === 'modal-gallery') {
             resetUploadModal(); 
         }
@@ -269,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*********** Afficher les travaux ***********/
 
-    function displayWorksInModal(works) {
+    window.displayWorksInModal = function(works) {
         modalWorksContainer.innerHTML = '';
         if (!works || works.length === 0) {
             modalWorksContainer.innerHTML = '<p>Aucun travail à afficher</p>';
@@ -278,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
         works.forEach(work => {
             const workElement = document.createElement('div');
             workElement.classList.add('work-item');
+            workElement.dataset.workId = work.id;
 
             const imageElement = document.createElement('img');
             imageElement.src = work.imageUrl;
@@ -292,13 +292,34 @@ document.addEventListener('DOMContentLoaded', function () {
             trashIcon.appendChild(icon);
             workElement.appendChild(trashIcon);
 
-            trashIcon.addEventListener('click', () => {
-                deleteWork(work.id);
+            trashIcon.addEventListener('click', (event) => {
+                event.stopPropagation();
+                showConfirmationPopup(work.id);
             });
 
             modalWorksContainer.appendChild(workElement);
         });
     }
+
+    /*********** click event des trash icon ***********/
+
+    document.body.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('trash-icon')) {
+            // L'élément trash-icon a été cliqué
+            console.log("Icône de suppression cliquée");
+    
+            // Récupérer l'ID du travail à supprimer
+            const workId = event.target.closest('.work-item') ? event.target.closest('.work-item').dataset.workId : null;
+            console.log("ID du travail à supprimer :", workId);
+    
+            if (workId) {
+                // Appeler la popup de confirmation
+                showConfirmationPopup(workId);
+            } else {
+                console.error("Aucun ID trouvé pour ce travail.");
+            }
+        }
+    });
 
     /*********** Chargement initial ***********/
 
