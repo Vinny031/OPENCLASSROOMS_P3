@@ -179,7 +179,6 @@
     border: none;
     cursor: pointer;
     background-color: white;
-    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
 }
 
 #popup-confirm:hover i,
@@ -187,9 +186,14 @@
     transform: scale(1.1);
 }
 
+#popup-confirm i,
+#popup-cancel i{
+    transition: transform 0.3s ease, color 0.3s ease;
+    font-size: 30px;
+}
+
 #popup-confirm i {
     color: #1D6154;
-    font-size: 30px;
 }
 
 #popup-confirm:hover i {
@@ -202,7 +206,7 @@
 }
 
 #popup-cancel:hover i {
-    color: #990715;
+    color: #a80717;
 }
 .line {
     width: 100%;
