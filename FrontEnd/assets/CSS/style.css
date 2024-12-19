@@ -474,7 +474,7 @@ main {
     resize: none;
 }
 
-#contact button {
+.contact-button {
     background-color: #1D6154;
     text-align: center;
     color: #fff;
@@ -488,15 +488,18 @@ main {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#contact button:hover {
+.contact-button:hover {
     background-color: #0e2f28;
     color: #fff;
     transform: scale(1.02);
 }
 
-#contact button:active {
+.contact-button:active {
     transform: translateY(-1px);
 }
 

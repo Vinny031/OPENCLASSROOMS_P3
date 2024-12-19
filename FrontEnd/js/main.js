@@ -121,26 +121,73 @@ function setActiveButton(button, buttonsSelector = '.category-button') {
     // Générer dynamiquement la section contact
 
     const contactSection = document.getElementById("contact");
-    contactSection.innerHTML = `
-        <h2>Contact</h2>
-        <p>Vous avez un projet ? Discutons-en !</p>
-        <form action="#" method="post">
-            <div class="contact-form">
-                <label for="name">Nom</label>
-                <input type="text" id="name" placeholder="" required>
-            </div>
-            <div class="contact-form">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" placeholder="" required>
-            </div>
-            <div class="contact-form">
-                <label for="message">Message</label>
-                <textarea id="message" placeholder="" required></textarea>
-            </div>
-        </form>
-            <button type="submit">Envoyer</button>
 
-    `;
+    const contactTitle = document.createElement("h2");
+    contactTitle.textContent = "Contact";
+    
+    const contactDescription = document.createElement("p");
+    contactDescription.textContent = "Vous avez un projet ? Discutons-en !";
+    
+    const contactForm = document.createElement("form");
+    contactForm.action = "#";
+    contactForm.method = "post";
+    
+    const nameDiv = document.createElement("div");
+    nameDiv.className = "contact-form";
+    
+    const nameLabel = document.createElement("label");
+    nameLabel.htmlFor = "name";
+    nameLabel.textContent = "Nom";
+    
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.id = "name";
+    nameInput.placeholder = "";
+    nameInput.required = true;
+    
+    const emailDiv = document.createElement("div");
+    emailDiv.className = "contact-form";
+    
+    const emailLabel = document.createElement("label");
+    emailLabel.htmlFor = "email";
+    emailLabel.textContent = "E-mail";
+    
+    const emailInput = document.createElement("input");
+    emailInput.type = "email";
+    emailInput.id = "email";
+    emailInput.placeholder = "";
+    emailInput.required = true;
+    
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "contact-form";
+    
+    const messageLabel = document.createElement("label");
+    messageLabel.htmlFor = "message";
+    messageLabel.textContent = "Message";
+    
+    const messageTextarea = document.createElement("textarea");
+    messageTextarea.id = "message";
+    messageTextarea.placeholder = "";
+    messageTextarea.required = true;
+    
+    const submitDiv = document.createElement("div");
+    submitDiv.textContent = "Envoyer";
+    submitDiv.className = "contact-button";
+    submitDiv.role = "button";
+    
+    nameDiv.appendChild(nameLabel);
+    nameDiv.appendChild(nameInput);
+    emailDiv.appendChild(emailLabel);
+    emailDiv.appendChild(emailInput);
+    messageDiv.appendChild(messageLabel);
+    messageDiv.appendChild(messageTextarea);
+    contactForm.appendChild(nameDiv);
+    contactForm.appendChild(emailDiv);
+    contactForm.appendChild(messageDiv);
+    contactSection.appendChild(contactTitle);
+    contactSection.appendChild(contactDescription);
+    contactSection.appendChild(contactForm);
+    contactSection.appendChild(submitDiv);
 
     // Fonction pour ajouter un comportement au formulaire
 
