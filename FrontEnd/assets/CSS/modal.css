@@ -154,11 +154,56 @@
 }
 
 .popup-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: auto auto;
+    gap: 10px;
     background: white;
     padding: 20px;
     border-radius: 5px;
 }
 
+.popup-content p {
+    grid-column: span 2;
+    text-align: center;
+}
+
+#popup-confirm,
+#popup-cancel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+#popup-confirm:hover i,
+#popup-cancel:hover i {
+    transform: scale(1.1);
+}
+
+#popup-confirm i {
+    color: #1D6154;
+    font-size: 30px;
+}
+
+#popup-confirm:hover i {
+    color: #0e2f28;
+}
+
+#popup-cancel i {
+    color: #c70d20;
+    font-size: 30px;
+}
+
+#popup-cancel:hover i {
+    color: #990715;
+}
 .line {
     width: 100%;
     border-bottom: 1px solid #B3B3B3;
