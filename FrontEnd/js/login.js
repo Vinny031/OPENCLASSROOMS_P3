@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const main = document.getElementById("login-html");
 
-    // Création des éléments
     const loginPage = document.createElement("div");
     loginPage.className = "login-page";
 
@@ -10,7 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loginTitle.textContent = "Log In";
 
     const loginForm = document.createElement("form");
-    loginForm.className = "login-form";
+    loginForm.className = "login-form-container"; 
+
+    const emailDiv = document.createElement("div");
+    emailDiv.className = "login-form";
 
     const emailLabel = document.createElement("label");
     emailLabel.htmlFor = "email";
@@ -23,6 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
     emailInput.className = "form-input js-email";
     emailInput.required = true;
 
+    emailDiv.appendChild(emailLabel);
+    emailDiv.appendChild(emailInput);
+
+    const passwordDiv = document.createElement("div");
+    passwordDiv.className = "login-form";
+
     const passwordLabel = document.createElement("label");
     passwordLabel.htmlFor = "password";
     passwordLabel.className = "form-label";
@@ -33,6 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
     passwordInput.name = "password";
     passwordInput.className = "form-input js-password";
     passwordInput.required = true;
+
+    passwordDiv.appendChild(passwordLabel);
+    passwordDiv.appendChild(passwordInput);
 
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
@@ -48,10 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
     errorMessage.className = "error-message js-error-message";
     errorMessage.style.display = "none";
 
-    loginForm.appendChild(emailLabel);
-    loginForm.appendChild(emailInput);
-    loginForm.appendChild(passwordLabel);
-    loginForm.appendChild(passwordInput);
+    loginForm.appendChild(emailDiv);
+    loginForm.appendChild(passwordDiv);
     loginForm.appendChild(submitButton);
     loginForm.appendChild(forgotPasswordLink);
     loginPage.appendChild(loginTitle);
@@ -63,11 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
     attachLoginHandlers();
 });
 
-
 // Fonction pour attacher les gestionnaires d’événements
-
 function attachLoginHandlers() {
-    const loginForm = document.querySelector(".login-form");
+    const loginForm = document.querySelector(".login-form-container"); 
     const emailInput = document.querySelector(".js-email");
     const passwordInput = document.querySelector(".js-password");
     const errorMessage = document.querySelector(".js-error-message");
