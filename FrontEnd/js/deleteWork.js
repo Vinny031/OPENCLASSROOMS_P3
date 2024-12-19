@@ -15,19 +15,11 @@ window.deleteWork = async function (workId) {
             throw new Error(`Erreur lors de la suppression du travail : ${response.statusText}`);
         }
 
-        console.log("Travail supprimé avec succès depuis le serveur.");
-
         // Mettre à jour la liste locale des travaux
         allWorks = allWorks.filter(work => work.id !== parseInt(workId, 10));
 
-        console.log("Liste des travaux mise à jour :", allWorks);
-
-        // Mettre à jour l'affichage après suppression
-        if (typeof displayWorksInModal === 'function') {
-            displayWorksInModal(allWorks);
-        } else {
-            console.error("displayWorksInModal n'est pas définie");
-        }
+        displayWorks(allWorks);
+        displayWorksInModal(allWorks);
     } catch (error) {
         console.error("Erreur lors de la suppression :", error);
     }

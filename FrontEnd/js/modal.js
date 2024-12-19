@@ -196,14 +196,8 @@ document.addEventListener('DOMContentLoaded', function () {
         modalPages.forEach(page => {
             page.classList.toggle('active', page.id === pageId);
         });
-    
-        if (pageId === 'modal-add-photo') {
-            backButton.style.display = 'block';
-    
-        if (pageId === 'modal-gallery') {
-            resetUploadModal(); 
-        }
-    }}
+        backButton.style.display = pageId === 'modal-add-photo' ? 'block' : 'none';
+    }
 
     function populateCategories(categories) {
         const categorySelect = document.getElementById('photo-category');
@@ -270,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.displayWorksInModal = function(works) {
         modalWorksContainer.innerHTML = '';
+
         if (!works || works.length === 0) {
             modalWorksContainer.innerHTML = '<p>Aucun travail à afficher</p>';
             return;
@@ -462,8 +457,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 const newWork = await response.json();
+
                 allWorks.push(newWork);
+
+                displayWorks(allWorks);
+
                 displayWorksInModal(allWorks);
+
                 uploadForm.reset();
                 fileInput.value = '';
                 submitButton.disabled = true;

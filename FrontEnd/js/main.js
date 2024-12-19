@@ -84,27 +84,42 @@ function generateCategoryMenu(categories) {
 
 function displayWorks(works) {
     const gallery = document.querySelector('#gallery');
-    gallery.innerHTML = '';
+    gallery.innerHTML = '';  // Vider la galerie principale
 
-    if (works.length === 0) {
-        gallery.innerHTML = `
-        <div class="error">
-            <div class="error-icon">
-                <i class="fa-solid fa-circle-info"></i>
-            </div>
-            <div class="error-category-text">Pas de travaux dans cette catégorie.</div>
-        </div>
-        `;
+    if (!works || works.length === 0) {
+        const errorDiv = document.createElement('div');
+        errorDiv.classList.add('error');
+
+        const errorIcon = document.createElement('div');
+        errorIcon.classList.add('error-icon');
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-circle-info');
+        errorIcon.appendChild(icon);
+        errorDiv.appendChild(errorIcon);
+
+        const errorText = document.createElement('div');
+        errorText.classList.add('error-category-text');
+        errorText.textContent = 'Pas de travaux dans cette catégorie.';
+        errorDiv.appendChild(errorText);
+
+        gallery.appendChild(errorDiv);
         return;
     }
 
     works.forEach(work => {
         const workElement = document.createElement('div');
         workElement.classList.add('work');
-        workElement.innerHTML = `
-            <img src="${work.imageUrl}" alt="${work.title}" />
-            <h4>${work.title}</h4>
-        `;
+        workElement.dataset.workId = work.id;  // Utilisation de l'id pour manipulation future
+
+        const imageElement = document.createElement('img');
+        imageElement.src = work.imageUrl;
+        imageElement.alt = work.title;
+        workElement.appendChild(imageElement);
+
+        const titleElement = document.createElement('h4');
+        titleElement.textContent = work.title;
+        workElement.appendChild(titleElement);
+
         gallery.appendChild(workElement);
     });
 }
