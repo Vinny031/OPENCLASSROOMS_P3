@@ -100,6 +100,11 @@ function disableEditMode() {
 
 function logout(event) {
     event.preventDefault();
-    localStorage.removeItem("authToken");
-    window.location.href = "index.html";
+    
+    const userConfirmed = confirm("Êtes-vous sûr de vouloir vous déconnecter ?");
+
+    if (userConfirmed) {
+        localStorage.removeItem("authToken");
+        window.location.href = "login.html";
+    }
 }
