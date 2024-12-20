@@ -131,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function () {
     submitButton.textContent = 'Valider';
     modalAddPhoto.appendChild(submitButton);
 
-
     /*********** Fonctions génériques ***********/
 
     function openModal(pageId) {
@@ -147,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (pageId === 'modal-add-photo') {
             backButton.style.display = 'block';
     
-            // Ajouter le champ de fichier après l'ouverture de la modale
             const uploadSection = document.getElementById('upload-section');
             if (uploadSection) {
                 const fileInput = document.createElement('input');
@@ -178,12 +176,11 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             modalContainer.classList.add('hidden');
     
-            console.log("resetUploadModal appelé ? ", window.resetUploadModal);
-            if (window.resetUploadModal) {
-                window.resetUploadModal();
+            console.log("resetModal appelé ? ", window.resetModal);
+            if (window.resetModal) {
+                window.resetModal();
             }
     
-            // Désactiver le bouton de validation
             const submitButton = document.querySelector('.submit-button');
             if (submitButton) {
                 submitButton.disabled = true;
@@ -210,6 +207,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    previewImage.addEventListener('click', () => {
+        fileInput.click();
+    });
+
     function loadCategoriesFromMain() {
         if (window.allCategories && window.allCategories.length > 0) {
             populateCategories(window.allCategories);
@@ -234,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
-    
 
     /*********** Gestion des événements ***********/
 
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     backButton.addEventListener('click', () => {
-        resetUploadModal(); 
+        resetModal();  // Changement ici
         switchModalPage('modal-gallery');
     });
 
@@ -300,15 +300,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.body.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('trash-icon')) {
-            // L'élément trash-icon a été cliqué
             console.log("Icône de suppression cliquée");
     
-            // Récupérer l'ID du travail à supprimer
             const workId = event.target.closest('.work-item') ? event.target.closest('.work-item').dataset.workId : null;
             console.log("ID du travail à supprimer :", workId);
     
             if (workId) {
-                // Appeler la popup de confirmation
                 showConfirmationPopup(workId);
             } else {
                 console.error("Aucun ID trouvé pour ce travail.");
@@ -322,8 +319,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*********** Fonction d'upload ***********/
 
-    // Ajout du champ input pour le fichier
-
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.id = 'photo-file';
@@ -331,24 +326,13 @@ document.addEventListener('DOMContentLoaded', function () {
     fileInput.required = true;
     fileInput.style.display = 'none';
 
-    // Ajout du champ input à la section de téléchargement
-
     const uploadSection = document.getElementById('upload-section');
     if (uploadSection) {
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.id = 'photo-file';
-        fileInput.accept = '.jpg, .png';
-        fileInput.required = true;
-        fileInput.style.display = 'none';
-
         uploadSection.appendChild(fileInput);
         console.log("fileInput ajouté à uploadSection");
     } else {
         console.error('uploadSection non trouvé dans le DOM');
     }
-
-    // Lorsque l'utilisateur clique sur "Ajouter photo", on déclenche l'input
 
     const addPhotoButtonForm = document.getElementById('add-photo-button-form');
     addPhotoButtonForm.addEventListener('click', (event) => {
@@ -356,14 +340,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (previewImage) {
             previewImage.style.display = 'none';
             previewImage.src = '';
-    }
-    fileInput.click();
+        }
+        fileInput.click();
     });
 
-    // Fonction pour valider l'upload
-
     function validateFile(file) {
-
         const validTypes = ['image/jpeg', 'image/png'];
         if (!validTypes.includes(file.type)) {
             alert('Seuls les fichiers JPG et PNG sont autorisés.');
@@ -379,8 +360,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    // Fonction pour vérifier la validité de tout le formulaire
-
     function checkFormValidity() {
         const file = fileInput.files[0];
         const title = titleInput.value.trim();
@@ -389,17 +368,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const isFileValid = file && validateFile(file);
         const isTitleValid = title.length > 0;
         const isCategoryValid = category !== '';
-
+        
         submitButton.disabled = !(isFileValid && isTitleValid && isCategoryValid);
-
-        if (!submitButton.disabled) {
-            submitButton.classList.add('active');
-        } else {
-            submitButton.classList.remove('active');
-        }
+        submitButton.classList.toggle('active', !submitButton.disabled);
     }
-    
-    // Événements pour valider le formulaire lors de changements
 
     fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -408,26 +380,23 @@ document.addEventListener('DOMContentLoaded', function () {
             reader.onload = function(e) {
                 previewImage.src = e.target.result;
                 previewImage.style.display = 'block';
-    
-                // Réinitialiser le contenu de uploadSection et afficher l'aperçu d'image
+
                 const uploadSection = document.getElementById('upload-section');
                 uploadSection.innerHTML = '';
                 uploadSection.appendChild(previewImage);
-    
+
                 checkFormValidity();
             };
             reader.readAsDataURL(file);
         } else {
             previewImage.style.display = 'none';
-            resetUploadModal();
+            resetModal();  // Changement ici
         }
         checkFormValidity();
     });
 
     titleInput.addEventListener('input', checkFormValidity);
     categorySelect.addEventListener('change', checkFormValidity);
-
-    // Lors de la soumission du formulaire (ajouter photo)
 
     uploadForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -450,61 +419,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch('http://localhost:5678/api/works', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 body: formData
             });
-
             if (response.ok) {
                 const newWork = await response.json();
-
-                allWorks.push(newWork);
-
-                displayWorks(allWorks);
-
-                displayWorksInModal(allWorks);
-
-                uploadForm.reset();
-                fileInput.value = '';
-                submitButton.disabled = true;
+                alert('Photo ajoutée avec succès !');
                 closeModal();
+                resetCategorySelect();
             } else {
-                console.error("Erreur lors de l'upload de la photo");
+                alert('Erreur lors de l\'ajout de la photo.');
             }
         } catch (error) {
-            console.error('Erreur lors de l\'upload:', error);
-        }
-    });
-
-    fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file && validateFile(file)) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImage.src = e.target.result;
-                previewImage.style.display = 'block';
-    
-                // Réinitialiser le contenu de uploadSection et afficher l'aperçu d'image
-                const uploadSection = document.getElementById('upload-section');
-                uploadSection.innerHTML = '';
-                uploadSection.appendChild(previewImage);
-    
-                checkFormValidity();
-            };
-            reader.readAsDataURL(file);
-        } else {
-            previewImage.style.display = 'none';
-            resetUploadModal();
-        }
-        checkFormValidity();
-    });
-
-    // Sortie de la modale avec bouton Esc
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && !modalContainer.classList.contains('hidden')) {
-            closeModal();
+            console.error('Erreur réseau:', error);
         }
     });
 });
-
