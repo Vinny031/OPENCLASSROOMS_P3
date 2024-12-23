@@ -130,6 +130,11 @@ document.addEventListener('DOMContentLoaded', function () {
     submitButton.disabled = true;
     submitButton.textContent = 'Valider';
     modalAddPhoto.appendChild(submitButton);
+    submitButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.log("Submit button clicked (via click)");
+        uploadForm.requestSubmit();
+    });
 
     /*********** Fonctions génériques ***********/
 
@@ -211,30 +216,43 @@ document.addEventListener('DOMContentLoaded', function () {
         fileInput.click();
     });
 
-    function loadCategoriesFromMain() {
+    async function loadCategoriesFromMain() {
+
         if (window.allCategories && window.allCategories.length > 0) {
+            console.log("Catégories déjà chargées:", window.allCategories);
             populateCategories(window.allCategories);
         } else {
             console.log("En attente de catégories...");
-            new Promise((resolve, reject) => {
-                const checkCategories = setInterval(() => {
-                    if (window.allCategories && window.allCategories.length > 0) {
-                        clearInterval(checkCategories);
-                        resolve(window.allCategories);
-                    }
-                }, 100);
-    
-                setTimeout(() => {
-                    clearInterval(checkCategories);
-                    reject("Aucune catégorie chargée après 5 secondes.");
-                }, 5000);
-            }).then(categories => {
+            try {
+                const categories = await waitForCategories();
                 populateCategories(categories);
-            }).catch(error => {
-                console.error(error);
-            });
+            } catch (error) {
+                console.error("Erreur lors du chargement des catégories:", error);
+            }
         }
     }
+    
+    async function waitForCategories() {
+        return new Promise((resolve, reject) => {
+            let intervalId = null;
+    
+            const checkCategories = () => {
+                if (window.allCategories && window.allCategories.length > 0) {
+                    clearInterval(intervalId);
+                    console.log("Catégories chargées:", window.allCategories);
+                    resolve(window.allCategories);
+                }
+            };
+    
+            intervalId = setInterval(checkCategories, 100);
+            setTimeout(() => {
+                clearInterval(intervalId);
+                reject("Aucune catégorie chargée après 5 secondes.");
+            }, 5000);
+        });
+    }
+    
+    
 
     /*********** Gestion des événements ***********/
 
@@ -317,9 +335,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadCategoriesFromMain();
 
-    /*********** Fonction d'upload ***********/
+/*********** Fonction d'upload ***********/
 
-    const fileInput = document.createElement('input');
+const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.id = 'photo-file';
     fileInput.accept = '.jpg, .png';
@@ -390,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function () {
             reader.readAsDataURL(file);
         } else {
             previewImage.style.display = 'none';
-            resetModal();  // Changement ici
+            resetModal(); 
         }
         checkFormValidity();
     });
@@ -398,41 +416,62 @@ document.addEventListener('DOMContentLoaded', function () {
     titleInput.addEventListener('input', checkFormValidity);
     categorySelect.addEventListener('change', checkFormValidity);
 
-    uploadForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const file = fileInput.files[0];
-        const title = document.getElementById('photo-title').value;
-        const category = document.getElementById('photo-category').value;
-
-        if (!file || !title || !category) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('title', title);
-        formData.append('category', category);
-
-        try {
-            const response = await fetch('http://localhost:5678/api/works', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                },
-                body: formData
-            });
-            if (response.ok) {
-                const newWork = await response.json();
-                alert('Photo ajoutée avec succès !');
-                closeModal();
-                resetCategorySelect();
-            } else {
-                alert('Erreur lors de l\'ajout de la photo.');
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', async (event) => {
+            event.preventDefault();  // Empêche la soumission par défaut
+            console.log("Form submitted");
+        
+            // Vérification du token avant de soumettre la requête
+            const token = localStorage.getItem('authToken');  // Assure-toi d'utiliser 'authToken' comme clé
+            if (!token) {
+                console.error('Token manquant');
+                alert('Vous devez être connecté pour soumettre une photo.');
+                return;  // Arrêter l'exécution si le token est manquant
             }
-        } catch (error) {
-            console.error('Erreur réseau:', error);
-        }
-    });
+        
+            const file = fileInput.files[0];
+            const title = document.getElementById('photo-title').value;
+            const category = document.getElementById('photo-category').value;
+        
+            if (!file || !title || !category) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+        
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('title', title);
+            formData.append('category', category);
+        
+            try {
+                const response = await fetch('http://localhost:5678/api/works', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token  // Utilise 'Bearer' et le token dans l'en-tête
+                    },
+                    body: formData
+                });
+        
+                if (response.ok) {
+                    const newWork = await response.json();
+                    alert('Photo ajoutée avec succès !');
+        
+                    modalWorksContainer.innerHTML = '';
+                    displayWorksInModal([newWork]);
+        
+                    uploadForm.reset();
+                    resetCategorySelect();
+                    previewImage.style.display = 'none';
+        
+                    closeModal();
+                } else {
+                    alert('Erreur lors de l\'ajout de la photo.');
+                }
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+            }
+        });        
+} else {
+    console.error("Formulaire non trouvé.");
+}
 });
