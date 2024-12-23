@@ -28,6 +28,7 @@ async function fetchCategories() {
         console.error("Erreur lors de la récupération des catégories :", error);
     }
 }
+
 /*********** RECUPERER LES TRAVAUX ***********/
 async function fetchWorks() {
     try {
