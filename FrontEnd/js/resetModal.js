@@ -11,7 +11,7 @@ window.resetModal = function () {
     // Réinitialiser le champ de fichier
     const fileInput = document.getElementById('photo-file');
     if (fileInput) {
-        fileInput.value = ''; // Réinitialiser la valeur
+        fileInput.value = '';
     }
 
     // Désactiver le bouton de validation
@@ -32,34 +32,28 @@ window.resetModal = function () {
     // Réinitialiser la section upload
     const uploadSection = document.getElementById('upload-section');
     if (uploadSection) {
-        // Vider tout le contenu existant de la section (réinitialiser la section d'upload)
         uploadSection.innerHTML = '';
 
-        // Créer l'élément <i> (icône de l'image)
         const icon = document.createElement('i');
         icon.classList.add('fa-regular', 'fa-image');
         uploadSection.appendChild(icon);
 
-        // Créer le bouton "Ajouter photo"
         const addPhotoButton = document.createElement('button');
         addPhotoButton.id = 'add-photo-button-form';
         addPhotoButton.textContent = '+ Ajouter photo';
         uploadSection.appendChild(addPhotoButton);
 
-        // Créer le paragraphe avec les instructions
         const instructions = document.createElement('p');
         instructions.textContent = 'jpg, png : 4mo max';
         uploadSection.appendChild(instructions);
 
-        // Créer l'image d'aperçu (si elle n'existe pas déjà)
         const previewImage = document.createElement('img');
         previewImage.classList.add('upload-image');
-        previewImage.src = '';  // Pas de source initiale
+        previewImage.src = '';
         previewImage.alt = 'Aperçu';
-        previewImage.style.display = 'none';  // Masquer l'image d'aperçu au début
+        previewImage.style.display = 'none';
         uploadSection.appendChild(previewImage);
 
-        // Créer l'input file si nécessaire
         let fileInput = document.getElementById('photo-file');
         if (!fileInput) {
             fileInput = document.createElement('input');
@@ -71,17 +65,13 @@ window.resetModal = function () {
             uploadSection.appendChild(fileInput);
         }
 
-        // Réinitialiser l'événement "change" pour l'aperçu de l'image
-        fileInput.removeEventListener('change', handleFileChange); // Supprimer l'ancien événement
+        fileInput.removeEventListener('change', handleFileChange);
         fileInput.addEventListener('change', handleFileChange);
 
-        // Réassigner l'événement "click" pour permettre de sélectionner un fichier via l'aperçu
         previewImage.addEventListener('click', function() {
-            // Ouvrir le champ de fichier lorsque l'image d'aperçu est cliquée
             fileInput.click();
         });
 
-        // Réassigner l'événement "click" pour permettre d'ajouter une photo via le bouton
         addPhotoButton.addEventListener('click', handleAddPhotoClick);
     }
 
@@ -100,10 +90,9 @@ function handleFileChange(e) {
         const reader = new FileReader();
         reader.onload = function (event) {
             previewImage.src = event.target.result;
-            previewImage.style.display = 'block'; // Afficher l'aperçu
+            previewImage.style.display = 'block';
             console.log('Aperçu mis à jour.');
 
-            // Masquer les autres éléments de la section upload
             icon.style.display = 'none';
             addPhotoButton.style.display = 'none';
             instructions.style.display = 'none';
@@ -119,7 +108,7 @@ function handleAddPhotoClick(e) {
     e.preventDefault();
     const fileInput = document.getElementById('photo-file');
     if (fileInput) {
-        fileInput.click(); // Ouvre le champ de fichier uniquement si fileInput existe
+        fileInput.click();
     } else {
         console.error("Le champ de fichier n'existe pas.");
     }
