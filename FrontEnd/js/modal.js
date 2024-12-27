@@ -252,8 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
-    
-
     /*********** Gestion des événements ***********/
 
     closeModalButton.addEventListener('click', closeModal);
@@ -266,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     backButton.addEventListener('click', () => {
-        resetModal();  // Changement ici
+        resetModal();
         switchModalPage('modal-gallery');
     });
 
@@ -282,34 +280,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.displayWorksInModal = function(works) {
         modalWorksContainer.innerHTML = '';
-
+    
         if (!works || works.length === 0) {
             modalWorksContainer.innerHTML = '<p>Aucun travail à afficher</p>';
             return;
         }
+    
         works.forEach(work => {
             const workElement = document.createElement('div');
             workElement.classList.add('work-item');
             workElement.dataset.workId = work.id;
-
+    
             const imageElement = document.createElement('img');
             imageElement.src = work.imageUrl;
             imageElement.alt = work.title;
             workElement.appendChild(imageElement);
-
+    
             const trashIcon = document.createElement('div');
             trashIcon.classList.add('trash-icon');
-
+    
             const icon = document.createElement('i');
             icon.classList.add('fa-solid', 'fa-trash-can');
             trashIcon.appendChild(icon);
             workElement.appendChild(trashIcon);
-
+    
             trashIcon.addEventListener('click', (event) => {
                 event.stopPropagation();
                 showConfirmationPopup(work.id);
             });
-
+    
             modalWorksContainer.appendChild(workElement);
         });
     }
@@ -335,9 +334,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadCategoriesFromMain();
 
-/*********** Fonction d'upload ***********/
+    /*********** Fonction d'upload ***********/
 
-const fileInput = document.createElement('input');
+    const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.id = 'photo-file';
     fileInput.accept = '.jpg, .png';
@@ -418,15 +417,14 @@ const fileInput = document.createElement('input');
 
     if (uploadForm) {
         uploadForm.addEventListener('submit', async (event) => {
-            event.preventDefault();  // Empêche la soumission par défaut
+            event.preventDefault();
             console.log("Form submitted");
         
-            // Vérification du token avant de soumettre la requête
-            const token = localStorage.getItem('authToken');  // Assure-toi d'utiliser 'authToken' comme clé
+            const token = localStorage.getItem('authToken');
             if (!token) {
                 console.error('Token manquant');
                 alert('Vous devez être connecté pour soumettre une photo.');
-                return;  // Arrêter l'exécution si le token est manquant
+                return;
             }
         
             const file = fileInput.files[0];
@@ -447,31 +445,23 @@ const fileInput = document.createElement('input');
                 const response = await fetch('http://localhost:5678/api/works', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + token  // Utilise 'Bearer' et le token dans l'en-tête
+                        'Authorization': `Bearer ${token}`,
                     },
-                    body: formData
+                    body: formData,
                 });
         
-                if (response.ok) {
-                    const newWork = await response.json();
-                    alert('Photo ajoutée avec succès !');
-        
-                    modalWorksContainer.innerHTML = '';
-                    displayWorksInModal([newWork]);
-        
-                    uploadForm.reset();
-                    resetCategorySelect();
-                    previewImage.style.display = 'none';
-        
-                    closeModal();
-                } else {
-                    alert('Erreur lors de l\'ajout de la photo.');
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'ajout de la photo');
                 }
+        
+                const newWork = await response.json();
+                console.log('Photo ajoutée avec succès:', newWork);
+                loadWorks();
+                closeModal();
             } catch (error) {
-                console.error('Erreur réseau:', error);
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue, veuillez réessayer');
             }
-        });        
-} else {
-    console.error("Formulaire non trouvé.");
-}
+        });
+    }
 });

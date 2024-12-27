@@ -1,10 +1,10 @@
 const apiUrl = 'http://localhost:5678/api/works';
 
-/*********** STOCKAGE DES TRAVAUX ***********/
+/*********** STOCKAGE DES TRAVAUX ET CATEGORIES ***********/
 let allWorks = [];
 let allCategories = [];
 
-/*********** APPELS DE L'API ***********/
+/*********** APPELS API ***********/
 async function apiRequest(endpoint, options = {}) {
     try {
         const response = await fetch(`http://localhost:5678/api/${endpoint}`, options);
@@ -16,8 +16,7 @@ async function apiRequest(endpoint, options = {}) {
     }
 }
 
-/*********** RECUPERER LES CATEGORIES ***********/
-
+/*********** RÉCUPÉRER LES CATEGORIES ***********/
 async function fetchCategories() {
     try {
         window.allCategories = await apiRequest('categories');
@@ -29,7 +28,7 @@ async function fetchCategories() {
     }
 }
 
-/*********** RECUPERER LES TRAVAUX ***********/
+/*********** RÉCUPÉRER LES TRAVAUX ***********/
 async function fetchWorks() {
     try {
         allWorks = await apiRequest('works');
@@ -39,13 +38,11 @@ async function fetchWorks() {
     }
 }
 
-/*********** GENERER LE MENU CATEGORIES ***********/
+/*********** GÉNÉRER LE MENU CATEGORIES ***********/
 function generateCategoryMenu(categories) {
     const menuContainer = document.querySelector('#category-menu');
-
     menuContainer.innerHTML = '';
 
-    // Ajouter l'option "Tous"
     const allOption = document.createElement('button');
     allOption.textContent = 'Tous';
     allOption.classList.add('category-button', 'active');
@@ -55,7 +52,7 @@ function generateCategoryMenu(categories) {
     });
     menuContainer.appendChild(allOption);
 
-    // Ajouter les catégories
+    // Ajouter les catégories dynamiquement
     categories.forEach(category => {
         const categoryOption = document.createElement('button');
         categoryOption.textContent = category.name;
@@ -77,6 +74,7 @@ function displayWorks(works) {
     if (!works || works.length === 0) {
         const errorDiv = document.createElement('div');
         errorDiv.classList.add('error');
+        
         const errorIcon = document.createElement('div');
         errorIcon.classList.add('error-icon');
         const icon = document.createElement('i');
@@ -93,6 +91,7 @@ function displayWorks(works) {
         return;
     }
 
+    // Affichage des travaux sous forme de cartes
     works.forEach(work => {
         const workElement = document.createElement('div');
         workElement.classList.add('work');
@@ -111,66 +110,39 @@ function displayWorks(works) {
     });
 }
 
-/*********** GERER LES BOUTONS ACTIFS ***********/
+/*********** GÉRER LES BOUTONS ACTIFS ***********/
 function setActiveButton(button, buttonsSelector = '.category-button') {
     document.querySelectorAll(buttonsSelector).forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
 }
 
-/*********** CONTACT FORM ***********/
+/*********** FORMULAIRE DE CONTACT ***********/
 function generateContactForm() {
     const contactSection = document.getElementById("contact");
 
+    // Créer le titre et la description du formulaire
     const contactTitle = document.createElement("h2");
     contactTitle.textContent = "Contact";
-
+    
     const contactDescription = document.createElement("p");
     contactDescription.textContent = "Vous avez un projet ? Discutons-en !";
 
+    // Créer le formulaire
     const contactForm = document.createElement("form");
     contactForm.action = "#";
     contactForm.method = "post";
 
-    const nameDiv = document.createElement("div");
-    nameDiv.className = "contact-form";
-    const nameLabel = document.createElement("label");
-    nameLabel.htmlFor = "name";
-    nameLabel.textContent = "Nom";
-    const nameInput = document.createElement("input");
-    nameInput.type = "text";
-    nameInput.id = "name";
-    nameInput.required = true;
-
-    const emailDiv = document.createElement("div");
-    emailDiv.className = "contact-form";
-    const emailLabel = document.createElement("label");
-    emailLabel.htmlFor = "email";
-    emailLabel.textContent = "E-mail";
-    const emailInput = document.createElement("input");
-    emailInput.type = "email";
-    emailInput.id = "email";
-    emailInput.required = true;
-
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "contact-form";
-    const messageLabel = document.createElement("label");
-    messageLabel.htmlFor = "message";
-    messageLabel.textContent = "Message";
-    const messageTextarea = document.createElement("textarea");
-    messageTextarea.id = "message";
-    messageTextarea.required = true;
+    // Création des champs du formulaire
+    const nameDiv = createInputField("Nom", "text", "name");
+    const emailDiv = createInputField("E-mail", "email", "email");
+    const messageDiv = createTextareaField("Message", "message");
 
     const submitDiv = document.createElement("div");
     submitDiv.textContent = "Envoyer";
     submitDiv.className = "contact-button";
     submitDiv.role = "button";
 
-    nameDiv.appendChild(nameLabel);
-    nameDiv.appendChild(nameInput);
-    emailDiv.appendChild(emailLabel);
-    emailDiv.appendChild(emailInput);
-    messageDiv.appendChild(messageLabel);
-    messageDiv.appendChild(messageTextarea);
+    // Ajouter les éléments du formulaire dans la section de contact
     contactForm.appendChild(nameDiv);
     contactForm.appendChild(emailDiv);
     contactForm.appendChild(messageDiv);
@@ -180,7 +152,43 @@ function generateContactForm() {
     contactSection.appendChild(submitDiv);
 }
 
-/*********** FORMULAIRE DE CONTACT ***********/
+/*********** CREATION DES CHAMPS DE FORMULAIRE ***********/
+function createInputField(labelText, inputType, inputId) {
+    const div = document.createElement("div");
+    div.className = "contact-form";
+
+    const label = document.createElement("label");
+    label.htmlFor = inputId;
+    label.textContent = labelText;
+
+    const input = document.createElement("input");
+    input.type = inputType;
+    input.id = inputId;
+    input.required = true;
+
+    div.appendChild(label);
+    div.appendChild(input);
+    return div;
+}
+
+function createTextareaField(labelText, textareaId) {
+    const div = document.createElement("div");
+    div.className = "contact-form";
+
+    const label = document.createElement("label");
+    label.htmlFor = textareaId;
+    label.textContent = labelText;
+
+    const textarea = document.createElement("textarea");
+    textarea.id = textareaId;
+    textarea.required = true;
+
+    div.appendChild(label);
+    div.appendChild(textarea);
+    return div;
+}
+
+/*********** GÉRER L'ENVOI DU FORMULAIRE DE CONTACT ***********/
 function attachContactFormHandler() {
     const contactForm = document.querySelector("#contact form");
     contactForm.addEventListener("submit", (event) => {
