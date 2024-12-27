@@ -252,6 +252,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
+    
+
     /*********** Gestion des événements ***********/
 
     closeModalButton.addEventListener('click', closeModal);
@@ -334,9 +336,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadCategoriesFromMain();
 
-    /*********** Fonction d'upload ***********/
+/*********** Fonction d'upload ***********/
 
-    const fileInput = document.createElement('input');
+const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.id = 'photo-file';
     fileInput.accept = '.jpg, .png';
@@ -445,23 +447,54 @@ document.addEventListener('DOMContentLoaded', function () {
                 const response = await fetch('http://localhost:5678/api/works', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': 'Bearer ' + token
                     },
-                    body: formData,
+                    body: formData
                 });
         
-                if (!response.ok) {
-                    throw new Error('Erreur lors de l\'ajout de la photo');
-                }
+                if (response.ok) {
+                    const newWork = await response.json();
+                    alert('Photo ajoutée avec succès !');
         
-                const newWork = await response.json();
-                console.log('Photo ajoutée avec succès:', newWork);
-                loadWorks();
-                closeModal();
+                    allWorks.push(newWork);
+                    displayWorksInModal(allWorks);
+                    displayWorks(allWorks);
+        
+                    uploadForm.reset();
+                    resetCategorySelect();
+                    previewImage.style.display = 'none';
+        
+                    switchModalPage('modal-gallery'); 
+                } else {
+                    alert('Erreur lors de l\'ajout de la photo.');
+                }
             } catch (error) {
-                console.error('Erreur:', error);
-                alert('Une erreur est survenue, veuillez réessayer');
+                console.error('Erreur réseau:', error);
             }
-        });
-    }
+        });        
+} else {
+    console.error("Formulaire non trouvé.");
+}
 });
+
+function updateModalGallery(works) {
+    const modalGallery = document.querySelector('#modal-gallery .gallery'); 
+    modalGallery.innerHTML = '';
+
+    works.forEach(work => {
+        const workElement = document.createElement('div');
+        workElement.classList.add('work');
+        workElement.dataset.workId = work.id;
+
+        const imageElement = document.createElement('img');
+        imageElement.src = work.imageUrl;
+        imageElement.alt = work.title;
+        workElement.appendChild(imageElement);
+
+        const titleElement = document.createElement('h4');
+        titleElement.textContent = work.title;
+        workElement.appendChild(titleElement);
+
+        modalGallery.appendChild(workElement);
+    });
+}

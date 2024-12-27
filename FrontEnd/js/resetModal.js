@@ -1,20 +1,17 @@
 window.resetModal = function () {
     console.log('Réinitialisation de la modale commencée.');
 
-    // Réinitialiser le formulaire
     const uploadForm = document.getElementById('upload-form');
     if (uploadForm) {
         uploadForm.reset();
         console.log('Formulaire réinitialisé.');
     }
 
-    // Réinitialiser le champ de fichier
     const fileInput = document.getElementById('photo-file');
     if (fileInput) {
         fileInput.value = '';
     }
 
-    // Désactiver le bouton de validation
     const submitButton = document.querySelector('.submit-button');
     if (submitButton) {
         submitButton.disabled = true;
@@ -22,16 +19,15 @@ window.resetModal = function () {
         console.log('Bouton de validation désactivé.');
     }
 
-    // Réinitialiser la catégorie
     const categorySelect = document.getElementById('photo-category');
     if (categorySelect) {
         categorySelect.value = '';
         console.log('Sélecteur de catégorie réinitialisé.');
     }
 
-    // Réinitialiser la section upload
     const uploadSection = document.getElementById('upload-section');
     if (uploadSection) {
+
         uploadSection.innerHTML = '';
 
         const icon = document.createElement('i');
