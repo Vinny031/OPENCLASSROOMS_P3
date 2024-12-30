@@ -7,11 +7,6 @@ window.resetModal = function () {
         console.log('Formulaire réinitialisé.');
     }
 
-    const fileInput = document.getElementById('photo-file');
-    if (fileInput) {
-        fileInput.value = '';
-    }
-
     const submitButton = document.querySelector('.submit-button');
     if (submitButton) {
         submitButton.disabled = true;
@@ -27,7 +22,6 @@ window.resetModal = function () {
 
     const uploadSection = document.getElementById('upload-section');
     if (uploadSection) {
-
         uploadSection.innerHTML = '';
 
         const icon = document.createElement('i');
@@ -51,20 +45,26 @@ window.resetModal = function () {
         uploadSection.appendChild(previewImage);
 
         let fileInput = document.getElementById('photo-file');
-        if (!fileInput) {
+        if (fileInput) {
+            fileInput.value = '';
+            fileInput.style.visibility = 'hidden';
+            console.log('Champ de fichier réinitialisé.');
+        } else {
+            console.log('Champ de fichier non trouvé, création d\'un nouveau champ.');
             fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.id = 'photo-file';
             fileInput.accept = '.jpg, .png';
             fileInput.required = true;
-            fileInput.style.display = 'none';
+            fileInput.style.visibility = 'hidden';
             uploadSection.appendChild(fileInput);
+            console.log('Nouveau champ de fichier créé.');
         }
 
         fileInput.removeEventListener('change', handleFileChange);
         fileInput.addEventListener('change', handleFileChange);
 
-        previewImage.addEventListener('click', function() {
+        previewImage.addEventListener('click', function () {
             fileInput.click();
         });
 
@@ -76,12 +76,19 @@ window.resetModal = function () {
 
 // Fonction pour gérer l'événement "change" de l'input file (affichage de l'aperçu)
 function handleFileChange(e) {
+    console.log("Changement du fichier détecté");
     const file = e.target.files[0];
     const previewImage = document.querySelector('.upload-image');
     const icon = document.querySelector('.fa-image');
     const addPhotoButton = document.querySelector('#add-photo-button-form');
     const instructions = document.querySelector('#upload-section p');
 
+    if (!file) {
+        previewImage.style.display = 'none';
+        icon.style.display = 'block';
+        addPhotoButton.style.display = 'block';
+        instructions.style.display = 'block';
+    }
     if (file && previewImage) {
         const reader = new FileReader();
         reader.onload = function (event) {
@@ -104,8 +111,7 @@ function handleAddPhotoClick(e) {
     e.preventDefault();
     const fileInput = document.getElementById('photo-file');
     if (fileInput) {
+        fileInput.style.display = 'block';
         fileInput.click();
-    } else {
-        console.error("Le champ de fichier n'existe pas.");
     }
 }

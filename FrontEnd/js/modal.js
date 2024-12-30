@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const addNewPhotoButton = document.createElement('button');
     addNewPhotoButton.id = 'add-photo-button-form';
+    addNewPhotoButton.type = 'button'
     addNewPhotoButton.textContent = '+ Ajouter photo';
     uploadSectionContainer.appendChild(addNewPhotoButton);
 
@@ -133,7 +134,10 @@ document.addEventListener('DOMContentLoaded', function () {
     submitButton.addEventListener('click', (event) => {
         event.preventDefault();
         console.log("Submit button clicked (via click)");
-        uploadForm.requestSubmit();
+        checkFormValidity();
+        if (!submitButton.disabled) {
+            uploadForm.requestSubmit();
+        }
     });
 
     /*********** Fonctions génériques ***********/
@@ -153,14 +157,18 @@ document.addEventListener('DOMContentLoaded', function () {
     
             const uploadSection = document.getElementById('upload-section');
             if (uploadSection) {
-                const fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.id = 'photo-file';
-                fileInput.accept = '.jpg, .png';
-                fileInput.required = true;
-                fileInput.style.display = 'none';
-                uploadSection.appendChild(fileInput);
-                console.log("fileInput ajouté à uploadSection");
+                let fileInput = document.getElementById('photo-file');
+                if (!fileInput) {
+                    fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.id = 'photo-file';
+                    fileInput.name = 'photo-file';
+                    fileInput.accept = '.jpg, .png';
+                    fileInput.required = true;
+                    fileInput.style.display = 'none';
+                    uploadSection.appendChild(fileInput);
+                    console.log("fileInput ajouté à uploadSection");
+                }
             } else {
                 console.error('uploadSection non trouvé dans le DOM');
             }
@@ -251,8 +259,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 5000);
         });
     }
-    
-    
 
     /*********** Gestion des événements ***********/
 
@@ -338,140 +344,169 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /*********** Fonction d'upload ***********/
 
+// Fonction de validation du fichier
+
+function validateFile(file) {
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (!validTypes.includes(file.type)) {
+        alert('Seuls les fichiers JPG et PNG sont autorisés.');
+        return false;
+    }
+
+    const maxSize = 4 * 1024 * 1024;
+    if (file.size > maxSize) {
+        alert('Le fichier ne doit pas dépasser 4 Mo.');
+        return false;
+    }
+
+    return true;
+}
+
+// Définition du champ input pour le fichier photo
+
 const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.id = 'photo-file';
-    fileInput.accept = '.jpg, .png';
-    fileInput.required = true;
-    fileInput.style.display = 'none';
+fileInput.type = 'file';
+fileInput.id = 'photo-file';
+fileInput.accept = '.jpg, .png';
+fileInput.required = true;
+fileInput.style.display = 'none';
 
-    const uploadSection = document.getElementById('upload-section');
-    if (uploadSection) {
-        uploadSection.appendChild(fileInput);
-        console.log("fileInput ajouté à uploadSection");
+// Ajout du champ file à la section de téléchargement
+const uploadSection = document.getElementById('upload-section');
+if (uploadSection) {
+    uploadSection.appendChild(fileInput);
+    console.log("fileInput ajouté à uploadSection");
+} else {
+    console.error('uploadSection non trouvé dans le DOM');
+}
+
+// Attacher un écouteur d'événement pour la validation du fichier
+
+fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+
+    if (file && validateFile(file)) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+            const uploadSection = document.getElementById('upload-section');
+            uploadSection.innerHTML = '';
+            uploadSection.appendChild(previewImage);
+            checkFormValidity();
+        };
+        reader.readAsDataURL(file);
     } else {
-        console.error('uploadSection non trouvé dans le DOM');
+        previewImage.style.display = 'none';
+        resetModal(); 
     }
+    checkFormValidity();
+});
 
-    const addPhotoButtonForm = document.getElementById('add-photo-button-form');
-    addPhotoButtonForm.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (previewImage) {
-            previewImage.style.display = 'none';
-            previewImage.src = '';
-        }
-        fileInput.click();
-    });
+// Création d'un bouton pour ajouter une photo
 
-    function validateFile(file) {
-        const validTypes = ['image/jpeg', 'image/png'];
-        if (!validTypes.includes(file.type)) {
-            alert('Seuls les fichiers JPG et PNG sont autorisés.');
-            return false;
-        }
-
-        const maxSize = 4 * 1024 * 1024;
-        if (file.size > maxSize) {
-            alert('Le fichier ne doit pas dépasser 4 Mo.');
-            return false;
-        }
-
-        return true;
-    }
-
-    function checkFormValidity() {
-        const file = fileInput.files[0];
-        const title = titleInput.value.trim();
-        const category = categorySelect.value;
-    
-        const isFileValid = file && validateFile(file);
-        const isTitleValid = title.length > 0;
-        const isCategoryValid = category !== '';
-        
-        submitButton.disabled = !(isFileValid && isTitleValid && isCategoryValid);
-        submitButton.classList.toggle('active', !submitButton.disabled);
-    }
-
-    fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file && validateFile(file)) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImage.src = e.target.result;
-                previewImage.style.display = 'block';
-
-                const uploadSection = document.getElementById('upload-section');
-                uploadSection.innerHTML = '';
-                uploadSection.appendChild(previewImage);
-
-                checkFormValidity();
-            };
-            reader.readAsDataURL(file);
+const addPhotoButtonForm = document.getElementById('add-photo-button-form');
+addPhotoButtonForm.addEventListener('click', (event) => {
+    event.preventDefault();
+    const file = fileInput.files[0];
+    if (file) {
+        if (validateFile(file)) {
+            previewImage.style.display = 'block';
+            previewImage.src = URL.createObjectURL(file);
+            checkFormValidity();
         } else {
-            previewImage.style.display = 'none';
-            resetModal(); 
+            console.error('Fichier invalide');
         }
-        checkFormValidity();
-    });
+    }
+    
+    fileInput.click();
+});
 
-    titleInput.addEventListener('input', checkFormValidity);
-    categorySelect.addEventListener('change', checkFormValidity);
+function checkFormValidity() {
+    const file = fileInput.files[0];
+    const title = titleInput.value.trim();
+    const category = categorySelect.value;
 
-    if (uploadForm) {
-        uploadForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            console.log("Form submitted");
-        
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                console.error('Token manquant');
-                alert('Vous devez être connecté pour soumettre une photo.');
-                return;
+    console.log("Fichier sélectionné : ", file);
+    console.log("Titre : ", title);
+    console.log("Catégorie : ", category);
+
+    const isFileValid = file && validateFile(file);
+    const isTitleValid = title.length > 0;
+    const isCategoryValid = category !== '';
+
+    console.log("Validité du fichier : ", isFileValid);
+    console.log("Validité du titre : ", isTitleValid);
+    console.log("Validité de la catégorie : ", isCategoryValid);
+    
+    submitButton.disabled = !(isFileValid && isTitleValid && isCategoryValid);
+    submitButton.classList.toggle('active', !submitButton.disabled);
+    }
+
+titleInput.addEventListener('input', () => {
+    checkFormValidity();
+});
+
+categorySelect.addEventListener('change', () => {
+    checkFormValidity();
+});
+
+if (uploadForm) {
+    uploadForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        console.log("Form submitted");
+    
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            console.error('Token manquant');
+            alert('Vous devez être connecté pour soumettre une photo.');
+            return;
+        }
+    
+        const file = fileInput.files[0];
+        const title = document.getElementById('photo-title').value;
+        const category = document.getElementById('photo-category').value;
+    
+        if (!file || !title || !category) {
+            alert('Veuillez remplir tous les champs');
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('title', title);
+        formData.append('category', category);
+    
+        try {
+            const response = await fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                body: formData
+            });
+    
+            if (response.ok) {
+                const newWork = await response.json();
+                alert('Photo ajoutée avec succès !');
+    
+                allWorks.push(newWork);
+                displayWorksInModal(allWorks);
+                displayWorks(allWorks);
+    
+                uploadForm.reset();
+                resetCategorySelect();
+                resetModal()
+                recreateFileInput();
+    
+                switchModalPage('modal-gallery'); 
+            } else {
+                alert('Erreur lors de l\'ajout de la photo.');
             }
-        
-            const file = fileInput.files[0];
-            const title = document.getElementById('photo-title').value;
-            const category = document.getElementById('photo-category').value;
-        
-            if (!file || !title || !category) {
-                alert('Veuillez remplir tous les champs');
-                return;
-            }
-        
-            const formData = new FormData();
-            formData.append('image', file);
-            formData.append('title', title);
-            formData.append('category', category);
-        
-            try {
-                const response = await fetch('http://localhost:5678/api/works', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: formData
-                });
-        
-                if (response.ok) {
-                    const newWork = await response.json();
-                    alert('Photo ajoutée avec succès !');
-        
-                    allWorks.push(newWork);
-                    displayWorksInModal(allWorks);
-                    displayWorks(allWorks);
-        
-                    uploadForm.reset();
-                    resetCategorySelect();
-                    previewImage.style.display = 'none';
-        
-                    switchModalPage('modal-gallery'); 
-                } else {
-                    alert('Erreur lors de l\'ajout de la photo.');
-                }
-            } catch (error) {
-                console.error('Erreur réseau:', error);
-            }
-        });        
+        } catch (error) {
+            console.error('Erreur réseau:', error);
+        }
+    });        
 } else {
     console.error("Formulaire non trouvé.");
 }
@@ -496,5 +531,30 @@ function updateModalGallery(works) {
         workElement.appendChild(titleElement);
 
         modalGallery.appendChild(workElement);
+    });
+}
+
+// Fonction pour recréer le champ file
+function recreateFileInput() {
+    let fileInput = document.getElementById('photo-file');
+    
+    if (!fileInput) {
+        console.log("Création d'un nouvel input de fichier");
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'photo-file';
+        fileInput.name = 'photo-file';
+        fileInput.accept = '.jpg, .png';
+        fileInput.required = true;
+        fileInput.style.display = 'none';
+        document.getElementById('upload-section').appendChild(fileInput);
+    }
+    fileInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file && validateFile(file)) {
+            console.log('Fichier valide');
+        } else {
+            console.log('Fichier invalide');
+        }
     });
 }
