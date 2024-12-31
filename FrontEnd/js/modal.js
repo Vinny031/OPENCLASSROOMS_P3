@@ -189,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             modalContainer.classList.add('hidden');
     
-            console.log("resetModal appelé ? ", window.resetModal);
             if (window.resetModal) {
                 window.resetModal();
             }
@@ -476,12 +475,15 @@ if (uploadForm) {
         formData.append('image', file);
         formData.append('title', title);
         formData.append('category', category);
+        formData.append('timestamp', new Date().getTime()); 
     
         try {
-            const response = await fetch('http://localhost:5678/api/works', {
+    const response = await fetch('http://localhost:5678/api/works', {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + token,
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
                 },
                 body: formData
             });
@@ -490,16 +492,16 @@ if (uploadForm) {
                 const newWork = await response.json();
                 alert('Photo ajoutée avec succès !');
     
-                allWorks.push(newWork);
-                displayWorksInModal(allWorks);
-                displayWorks(allWorks);
+                allWorks.push(newWork); // Mettre à jour les travaux affichés
+                displayWorksInModal(allWorks); // Mettre à jour l'affichage dans la modal
+                displayWorks(allWorks); // Mettre à jour l'affichage principal
     
-                uploadForm.reset();
-                resetCategorySelect();
-                resetModal()
-                recreateFileInput();
+                uploadForm.reset(); // Réinitialiser le formulaire
+                resetCategorySelect(); // Réinitialiser la sélection de catégorie
+                resetModal() // Fermer la modal
+                recreateFileInput(); // Recréer le champ file (si nécessaire)
     
-                switchModalPage('modal-gallery'); 
+                switchModalPage('modal-gallery');  // Retourner à la galerie
             } else {
                 alert('Erreur lors de l\'ajout de la photo.');
             }
@@ -510,7 +512,6 @@ if (uploadForm) {
 } else {
     console.error("Formulaire non trouvé.");
 }
-});
 
 function updateModalGallery(works) {
     const modalGallery = document.querySelector('#modal-gallery .gallery'); 
@@ -547,7 +548,8 @@ function recreateFileInput() {
         fileInput.accept = '.jpg, .png';
         fileInput.required = true;
         fileInput.style.display = 'none';
-        document.getElementById('upload-section').appendChild(fileInput);
+        uploadSection.appendChild(newFileInput);
+        newFileInput.addEventListener('change', handleFileChange);
     }
     fileInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
@@ -558,3 +560,101 @@ function recreateFileInput() {
         }
     });
 }
+
+function handleFileChange(e) { 
+    const file = e.target.files[0];
+    const previewImage = document.querySelector('.upload-image');
+    const fileInput = document.getElementById('photo-file');
+
+    if (!file) {
+        console.log("Aucun fichier sélectionné, réinitialisation de l'interface.");
+        restoreUploadSection();
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        previewImage.src = event.target.result;
+        previewImage.classList.remove('hidden');
+        previewImage.style.display = 'block';
+
+        const icon = document.querySelector('.fa-image');
+        if (icon) icon.style.display = 'none';
+
+        const addPhotoButton = document.querySelector('#add-photo-button-form');
+        if (addPhotoButton) addPhotoButton.style.display = 'none';
+
+        const instructions = document.querySelector('#upload-section p');
+        if (instructions) instructions.style.display = 'none';
+
+        fileInput.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleAddPhotoClick(e) {
+    e.preventDefault();
+    const fileInput = document.getElementById('photo-file');
+    if (fileInput) {
+        fileInput.click();
+    }
+}
+
+function restoreUploadSection() {
+    const uploadSection = document.getElementById('upload-section');
+    if (!uploadSection) return;
+
+    uploadSection.innerHTML = '';
+
+    const icon = document.createElement('i');
+    icon.classList.add('fa-regular', 'fa-image');
+    uploadSection.appendChild(icon);
+
+    const addPhotoButton = document.createElement('button');
+    addPhotoButton.id = 'add-photo-button-form';
+    addPhotoButton.textContent = '+ Ajouter photo';
+    uploadSection.appendChild(addPhotoButton);
+
+    const instructions = document.createElement('p');
+    instructions.textContent = 'jpg, png : 4mo max';
+    uploadSection.appendChild(instructions);
+
+    const previewImage = document.createElement('img');
+    previewImage.classList.add('upload-image', 'hidden');
+    previewImage.src = '';
+    previewImage.alt = 'Aperçu';
+    uploadSection.appendChild(previewImage);
+
+    let fileInput = document.getElementById('photo-file');
+    if (fileInput) {
+        fileInput.removeEventListener('change', handleFileChange);
+    }
+
+    if (!fileInput) {
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'photo-file';
+        fileInput.accept = '.jpg, .png';
+        fileInput.required = true;
+        fileInput.style.display = 'none';
+        uploadSection.appendChild(fileInput);
+    }
+
+    fileInput.addEventListener('change', handleFileChange);
+    addPhotoButton.addEventListener('click', handleAddPhotoClick);
+}
+
+window.resetModal = function () {
+    const uploadForm = document.getElementById('upload-form');
+    if (uploadForm) {
+        uploadForm.reset();
+    }
+
+    const fileInput = document.getElementById('photo-file');
+    if (fileInput) {
+        fileInput.value = '';
+    }
+    restoreUploadSection();
+};
+
+});
