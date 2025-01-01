@@ -1,7 +1,7 @@
 /*********** VERIFIE SI LE USER EST CONNECTE VIA LE TOKEN ***********/
 
 function checkAuth() {
-    const token = localStorage.getItem("authToken");
+    const token = sessionStorage.getItem("authToken");
 
     if (token) {
         enableEditMode();
@@ -45,6 +45,12 @@ function checkAuth() {
         }
         if (editText) {
             editText.classList.add('hidden');
+        }
+
+        const loginLink = document.querySelector('a[href="login.html"]');
+        if (loginLink) {
+            loginLink.textContent = "login";
+            loginLink.setAttribute('href', 'login.html');
         }
     }
 }
@@ -104,7 +110,7 @@ function logout(event) {
     const userConfirmed = confirm("Êtes-vous sûr de vouloir vous déconnecter ?");
 
     if (userConfirmed) {
-        localStorage.removeItem("authToken");
+        sessionStorage.removeItem("authToken");
         window.location.href = "login.html";
     }
 }

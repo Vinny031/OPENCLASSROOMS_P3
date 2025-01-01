@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function () {
     modalAddPhoto.appendChild(submitButton);
     submitButton.addEventListener('click', (event) => {
         event.preventDefault();
-        console.log("Submit button clicked (via click)");
         checkFormValidity();
         if (!submitButton.disabled) {
             uploadForm.requestSubmit();
@@ -167,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     fileInput.required = true;
                     fileInput.style.display = 'none';
                     uploadSection.appendChild(fileInput);
-                    console.log("fileInput ajouté à uploadSection");
                 }
             } else {
                 console.error('uploadSection non trouvé dans le DOM');
@@ -226,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function () {
     async function loadCategoriesFromMain() {
 
         if (window.allCategories && window.allCategories.length > 0) {
-            console.log("Catégories déjà chargées:", window.allCategories);
             populateCategories(window.allCategories);
         } else {
             console.log("En attente de catégories...");
@@ -246,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const checkCategories = () => {
                 if (window.allCategories && window.allCategories.length > 0) {
                     clearInterval(intervalId);
-                    console.log("Catégories chargées:", window.allCategories);
                     resolve(window.allCategories);
                 }
             };
@@ -324,10 +320,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.body.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('trash-icon')) {
-            console.log("Icône de suppression cliquée");
     
             const workId = event.target.closest('.work-item') ? event.target.closest('.work-item').dataset.workId : null;
-            console.log("ID du travail à supprimer :", workId);
     
             if (workId) {
                 showConfirmationPopup(workId);
@@ -374,7 +368,6 @@ fileInput.style.display = 'none';
 const uploadSection = document.getElementById('upload-section');
 if (uploadSection) {
     uploadSection.appendChild(fileInput);
-    console.log("fileInput ajouté à uploadSection");
 } else {
     console.error('uploadSection non trouvé dans le DOM');
 }
@@ -426,17 +419,9 @@ function checkFormValidity() {
     const title = titleInput.value.trim();
     const category = categorySelect.value;
 
-    console.log("Fichier sélectionné : ", file);
-    console.log("Titre : ", title);
-    console.log("Catégorie : ", category);
-
     const isFileValid = file && validateFile(file);
     const isTitleValid = title.length > 0;
     const isCategoryValid = category !== '';
-
-    console.log("Validité du fichier : ", isFileValid);
-    console.log("Validité du titre : ", isTitleValid);
-    console.log("Validité de la catégorie : ", isCategoryValid);
     
     submitButton.disabled = !(isFileValid && isTitleValid && isCategoryValid);
     submitButton.classList.toggle('active', !submitButton.disabled);
@@ -453,7 +438,6 @@ categorySelect.addEventListener('change', () => {
 if (uploadForm) {
     uploadForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        console.log("Form submitted");
     
         const token = localStorage.getItem('authToken');
         if (!token) {
@@ -540,7 +524,6 @@ function recreateFileInput() {
     let fileInput = document.getElementById('photo-file');
     
     if (!fileInput) {
-        console.log("Création d'un nouvel input de fichier");
         fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.id = 'photo-file';
@@ -554,7 +537,6 @@ function recreateFileInput() {
     fileInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file && validateFile(file)) {
-            console.log('Fichier valide');
         } else {
             console.log('Fichier invalide');
         }

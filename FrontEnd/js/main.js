@@ -21,7 +21,6 @@ async function apiRequest(endpoint, options = {}) {
 async function fetchCategories() {
     try {
         window.allCategories = await apiRequest('categories');
-        console.log("Catégories récupérées :", window.allCategories);
         generateCategoryMenu(window.allCategories);
         fetchWorks();
     } catch (error) {
@@ -188,9 +187,6 @@ function attachContactFormHandler() {
         const message = document.getElementById("message").value;
 
         if (name && email && message) {
-            console.log("Nom :", name);
-            console.log("Email :", email);
-            console.log("Message :", message);
             alert("Merci pour votre message ! Nous vous répondrons rapidement.");
         } else {
             alert("Veuillez remplir tous les champs.");
