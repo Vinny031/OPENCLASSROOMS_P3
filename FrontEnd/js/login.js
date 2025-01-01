@@ -96,7 +96,8 @@ function attachLoginHandlers() {
 
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem("authToken", data.token);
+                sessionStorage.setItem("authToken", data.token);
+
                 window.location.href = "index.html";
             } else {
                 afficherMessageErreur("E-mail ou mot de passe incorrect.");
