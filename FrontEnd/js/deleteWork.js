@@ -4,7 +4,7 @@ window.deleteWork = async function (workId) {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
             },
         });
 
