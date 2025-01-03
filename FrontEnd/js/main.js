@@ -1,10 +1,8 @@
 const apiUrl = 'http://localhost:5678/api/works';
 
-/*********** STOCKAGE DES TRAVAUX ***********/
 let allWorks = [];
 let allCategories = [];
 
-/*********** APPELS DE L'API ***********/
 async function apiRequest(endpoint, options = {}) {
     try {
         const response = await fetch(`http://localhost:5678/api/${endpoint}`, options);
@@ -185,6 +183,22 @@ function attachContactFormHandler() {
         }
     });
 }
+
+// NE PAS OUBLIER CE CODE, REDIRECTION DEPUIS LOGIN VERS SECTION CONTACT DE L INDEX
+
+document.addEventListener("DOMContentLoaded", () => {
+    const sectionToScroll = window.location.hash.substring(1);
+    if (sectionToScroll) {
+      setTimeout(function () {
+        const targetSection = document.getElementById(sectionToScroll);
+        if (targetSection) {
+          window.scrollTo({
+            top: targetSection.offsetTop,
+          });
+        }
+      }, 100);
+    }
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();

@@ -24,7 +24,6 @@ time, mark, audio, video {
     vertical-align: baseline;
 }
 
-/* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
     display: block;
@@ -118,8 +117,6 @@ h4 {
     margin-top: 7px;
 }
 
-/*********** HEADER ***********/
-
 header {
     display: flex;
     justify-content: space-between;
@@ -185,8 +182,6 @@ nav i:hover {
     cursor: pointer;
 }
 
-/*********** BARRE EDITION TOP ***********/
-
 .edit-mode-bar {
     display: flex;
     align-items: center;
@@ -209,8 +204,6 @@ nav i:hover {
     display: none;
     opacity: 0;
 }
-
-/*********** MAIN ***********/
 
 main {
     margin: 0 245px;
@@ -242,8 +235,6 @@ main {
 #introduction p {
     margin-bottom: 0.5em;
 }
-
-/*********** PORTFOLIO HEADER ***********/
 
 .portfolio-header {
     display: flex;
@@ -287,8 +278,6 @@ main {
     font-size: 16px;
     transform: rotate(-15deg) translateY(-3px);
 }
-
-/*********** CATEGORY MENU ***********/
 
 #category-menu {
     display: flex; 
@@ -342,8 +331,6 @@ main {
     cursor: default;
 }
 
-/*********** GALLERY ***********/
-
 #gallery {
     width: 100%;
     display: grid;
@@ -393,8 +380,6 @@ main {
 .work:hover {
     transform: scale(1.03);
 }
-
-/*********** CONTACT SECTION ***********/
 
 #contact {
     display: flex;
@@ -502,8 +487,6 @@ main {
 .contact-button:active {
     transform: translateY(-1px);
 }
-
-/*********** FOOTER ***********/
 
 footer {
     display: flex;
