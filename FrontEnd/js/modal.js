@@ -248,7 +248,6 @@ async function waitForCategories() {
                 resolve(window.allCategories);
             }
         };
-
         intervalId = setInterval(checkCategories, 100);
         setTimeout(() => {
             clearInterval(intervalId);
@@ -313,7 +312,6 @@ window.displayWorksInModal = function(works) {
             event.stopPropagation();
             showConfirmationPopup(work.id);
         });
-
         modalWorksContainer.appendChild(workElement);
     });
 }
