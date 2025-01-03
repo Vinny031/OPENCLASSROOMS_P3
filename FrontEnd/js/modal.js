@@ -163,7 +163,10 @@ function openModal(pageId) {
                 fileInput.accept = '.jpg, .png';
                 fileInput.required = true;
                 fileInput.style.display = 'none';
+
                 uploadSection.appendChild(fileInput);
+
+                fileInput.addEventListener('change', handleFileChange);
             }
         } else {
             console.error('uploadSection non trouvé dans le DOM');
@@ -574,7 +577,6 @@ function handleFileChange(event) {
 
     if (!file) {
         resetModal();
-        restoreUploadSection();
         return;
     }
 
