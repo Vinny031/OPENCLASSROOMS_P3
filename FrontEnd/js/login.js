@@ -72,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     attachLoginHandlers();
 });
 
-// Fonction pour attacher les gestionnaires d’événements
 function attachLoginHandlers() {
     const loginForm = document.querySelector(".login-form-container"); 
     const emailInput = document.querySelector(".js-email");

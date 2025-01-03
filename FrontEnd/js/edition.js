@@ -1,5 +1,3 @@
-/*********** VERIFIE SI LE USER EST CONNECTE VIA LE TOKEN ***********/
-
 function checkAuth() {
     const token = sessionStorage.getItem("authToken");
 
@@ -55,8 +53,6 @@ function checkAuth() {
     }
 }
 
-/*********** ACTIVE LE MODE EDITION ***********/
-
 function enableEditMode() {
     const editModeBar = document.querySelector('.edit-mode-bar');
     const editIcon = document.querySelector('.edit-mode-bar i');
@@ -70,8 +66,6 @@ function enableEditMode() {
         console.error("L'un des éléments pour activer le mode édition est manquant.");
     }
 }
-
-/*********** DESACTIVE LE MODE EDITION ***********/
 
 function disableEditMode() {
     const editModeBar = document.querySelector('.edit-mode-bar');
@@ -101,8 +95,6 @@ function disableEditMode() {
         loginLink.setAttribute('href', 'login.html');
     }
 }
-
-/*********** DECONNECTION USER ***********/
 
 function logout(event) {
     event.preventDefault();
