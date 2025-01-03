@@ -16,8 +16,6 @@ async function apiRequest(endpoint, options = {}) {
     }
 }
 
-/*********** RECUPERER LES CATEGORIES ***********/
-
 async function fetchCategories() {
     try {
         window.allCategories = await apiRequest('categories');
@@ -28,7 +26,6 @@ async function fetchCategories() {
     }
 }
 
-/*********** RECUPERER LES TRAVAUX ***********/
 async function fetchWorks() {
     try {
         allWorks = await apiRequest('works');
@@ -38,7 +35,6 @@ async function fetchWorks() {
     }
 }
 
-/*********** GENERER LE MENU CATEGORIES ***********/
 function generateCategoryMenu(categories) {
     const menuContainer = document.querySelector('#category-menu');
 
@@ -66,7 +62,6 @@ function generateCategoryMenu(categories) {
     });
 }
 
-/*********** AFFICHER LES TRAVAUX DANS LA GALLERIE ***********/
 function displayWorks(works) {
     const gallery = document.querySelector('#gallery');
     gallery.innerHTML = '';
@@ -108,13 +103,11 @@ function displayWorks(works) {
     });
 }
 
-/*********** GERER LES BOUTONS ACTIFS ***********/
 function setActiveButton(button, buttonsSelector = '.category-button') {
     document.querySelectorAll(buttonsSelector).forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
 }
 
-/*********** CONTACT FORM ***********/
 function generateContactForm() {
     const contactSection = document.getElementById("contact");
 
@@ -177,7 +170,6 @@ function generateContactForm() {
     contactSection.appendChild(submitDiv);
 }
 
-/*********** FORMULAIRE DE CONTACT ***********/
 function attachContactFormHandler() {
     const contactForm = document.querySelector("#contact form");
     contactForm.addEventListener("submit", (event) => {
@@ -194,7 +186,6 @@ function attachContactFormHandler() {
     });
 }
 
-/*********** APPEL DES FONCTIONS AU CHARGEMENT ***********/
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
     fetchCategories();

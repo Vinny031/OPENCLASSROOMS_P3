@@ -1,4 +1,3 @@
-// Fonction qui supprime un travail par son ID
 window.deleteWork = async function (workId) {
     try {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
