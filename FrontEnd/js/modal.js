@@ -495,9 +495,6 @@ function handleApiResponse(response) {
 
 function updateGalleryAndWorks(newWork) {
     newWork.imageUrl = `${newWork.imageUrl}?t=${Date.now()}`;
-
-    alert('Photo ajoutée avec succès !');
-
     allWorks = allWorks.map(work => {
         if (work.id === newWork.id) {
             return { ...work, imageUrl: newWork.imageUrl };
@@ -511,6 +508,8 @@ function updateGalleryAndWorks(newWork) {
 
     displayWorksInModal(allWorks);
     displayWorks(allWorks);
+
+    showValidationPopup();
 
     resetModal();
     switchModalPage('modal-gallery');
@@ -526,10 +525,6 @@ function handleSubmit(event) {
     const title = document.getElementById('photo-title').value;
     const category = document.getElementById('photo-category').value;
 
-    console.log("Fichier: ", file);
-    console.log("Titre: ", title);
-    console.log("Catégorie: ", category);
-
     if (!isFormValid(file, title, category)) return;
 
     const formData = createFormData(file, title, category);
@@ -544,6 +539,50 @@ function handleSubmit(event) {
         }
     });
 }
+
+function showValidationPopup() {
+    createValidationPopup();
+
+    const popup = document.getElementById('validation-popup');
+    popup.style.display = 'flex';
+}
+
+function createValidationPopup() {
+    if (document.getElementById('validation-popup')) return;
+
+    const popup = document.createElement('div');
+    popup.id = 'validation-popup';
+    popup.style.display = 'none';
+    document.body.appendChild(popup);
+
+    const popupContent = document.createElement('div');
+    popupContent.classList.add('validation-popup-content');
+    popup.appendChild(popupContent);
+
+    const message = document.createElement('p');
+    message.textContent = "Travail ajouté avec succès !";
+    popupContent.appendChild(message);
+
+    const closeButton = document.createElement('button');
+    closeButton.id = 'validation-popup-close';
+    closeButton.classList.add('close');
+
+    const closeIcon = document.createElement('i');
+    closeIcon.classList.add('fa-solid', 'fa-circle-check');
+    closeButton.appendChild(closeIcon);
+
+    popupContent.appendChild(closeButton);
+
+    closeButton.addEventListener('click', hideValidationPopup);
+}
+
+function hideValidationPopup() {
+    const popup = document.getElementById('validation-popup');
+    if (popup) {
+        popup.style.display = 'none';
+    }
+}
+
 
 if (uploadForm) {
     uploadForm.addEventListener('submit', handleSubmit);
