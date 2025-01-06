@@ -184,8 +184,6 @@ function attachContactFormHandler() {
     });
 }
 
-// NE PAS OUBLIER CE CODE, REDIRECTION DEPUIS LOGIN VERS SECTION CONTACT DE L INDEX
-
 document.addEventListener("DOMContentLoaded", () => {
     const sectionToScroll = window.location.hash.substring(1);
     if (sectionToScroll) {

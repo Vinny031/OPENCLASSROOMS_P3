@@ -24,7 +24,10 @@ function checkAuth() {
         if (loginLink) {
             loginLink.textContent = "logout";
             loginLink.setAttribute('href', '#');
-            loginLink.addEventListener('click', logout);
+            loginLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                showLogoutPopup();
+            });
         }
     } else {
         disableEditMode();
@@ -96,13 +99,71 @@ function disableEditMode() {
     }
 }
 
-function logout(event) {
-    event.preventDefault();
-    
-    const userConfirmed = confirm("Êtes-vous sûr de vouloir vous déconnecter ?");
+function showLogoutPopup() {
+    createLogoutPopup();
 
-    if (userConfirmed) {
-        sessionStorage.removeItem("authToken");
-        window.location.href = "login.html";
+    const popup = document.getElementById('logout-popup');
+    popup.style.display = 'flex';
+}
+
+function createLogoutPopup() {
+    if (document.getElementById('logout-popup')) return;
+
+    const popup = document.createElement('div');
+    popup.id = 'logout-popup';
+    popup.style.display = 'none';
+    document.body.appendChild(popup);
+
+    const popupContent = document.createElement('div');
+    popupContent.classList.add('popup-content');
+    popup.appendChild(popupContent);
+
+    const message = document.createElement('p');
+    message.textContent = "Êtes-vous sûr de vouloir vous déconnecter ?";
+    popupContent.appendChild(message);
+
+    const confirmButton = document.createElement('button');
+    confirmButton.id = 'popup-confirm';
+    confirmButton.classList.add('confirm');
+
+    const confirmIcon = document.createElement('i');
+    confirmIcon.classList.add('fa-solid', 'fa-circle-check');
+    confirmButton.appendChild(confirmIcon);
+
+    const confirmText = document.createTextNode(" Confirmer");
+    confirmButton.appendChild(confirmText);
+
+    popupContent.appendChild(confirmButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.id = 'popup-cancel';
+    cancelButton.classList.add('cancel');
+
+    const cancelIcon = document.createElement('i');
+    cancelIcon.classList.add('fa-solid', 'fa-circle-xmark');
+    cancelButton.appendChild(cancelIcon);
+
+    const cancelText = document.createTextNode(" Annuler");
+    cancelButton.appendChild(cancelText);
+
+    popupContent.appendChild(cancelButton);
+
+    cancelButton.addEventListener('click', hideLogoutPopup);
+
+    confirmButton.addEventListener('click', () => {
+        performLogout();
+        hideLogoutPopup();
+    });
+}
+
+function hideLogoutPopup() {
+    const popup = document.getElementById('logout-popup');
+    if (popup) {
+        popup.style.display = 'none';
     }
+}
+
+function performLogout() {
+    sessionStorage.removeItem("authToken");
+    window.location.href = "login.html";
 }
