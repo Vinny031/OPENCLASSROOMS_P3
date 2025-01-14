@@ -109,9 +109,6 @@ function setActiveButton(button, buttonsSelector = '.category-button') {
 function generateContactForm() {
     const contactSection = document.getElementById("contact");
 
-    const contactTitle = document.createElement("h2");
-    contactTitle.textContent = "Contact";
-
     const contactDescription = document.createElement("p");
     contactDescription.textContent = "Vous avez un projet ? Discutons-en !";
 
@@ -162,7 +159,6 @@ function generateContactForm() {
     contactForm.appendChild(nameDiv);
     contactForm.appendChild(emailDiv);
     contactForm.appendChild(messageDiv);
-    contactSection.appendChild(contactTitle);
     contactSection.appendChild(contactDescription);
     contactSection.appendChild(contactForm);
     contactSection.appendChild(submitDiv);
