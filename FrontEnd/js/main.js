@@ -1,7 +1,11 @@
 const apiUrl = 'http://localhost:5678/api/works';
 
+// Variables globales pour stocker les travaux et les catégories
+
 let allWorks = [];
 let allCategories = [];
+
+/*** Effectue une requête API générique.*/
 
 async function apiRequest(endpoint, options = {}) {
     try {
@@ -14,6 +18,8 @@ async function apiRequest(endpoint, options = {}) {
     }
 }
 
+/*** Récupère les catégories depuis l'API et génère le menu des catégories.*/
+
 async function fetchCategories() {
     try {
         window.allCategories = await apiRequest('categories');
@@ -24,6 +30,8 @@ async function fetchCategories() {
     }
 }
 
+/*** Récupère les travaux depuis l'API et les affiche.*/
+
 async function fetchWorks() {
     try {
         allWorks = await apiRequest('works');
@@ -32,6 +40,8 @@ async function fetchWorks() {
         console.error("Erreur lors de la récupération des travaux :", error);
     }
 }
+
+/*** Génère le menu des catégories avec des boutons interactifs.*/
 
 function generateCategoryMenu(categories) {
     const menuContainer = document.querySelector('#category-menu');
@@ -59,6 +69,8 @@ function generateCategoryMenu(categories) {
         menuContainer.appendChild(categoryOption);
     });
 }
+
+/*** Affiche les travaux dans la galerie.*/
 
 function displayWorks(works) {
     const gallery = document.querySelector('#gallery');
@@ -101,10 +113,14 @@ function displayWorks(works) {
     });
 }
 
+/*** Définit le bouton actif pour le menu des catégories.*/
+
 function setActiveButton(button, buttonsSelector = '.category-button') {
     document.querySelectorAll(buttonsSelector).forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
 }
+
+/*** Génère un formulaire de contact dynamique dans la section dédiée.*/
 
 function generateContactForm() {
     const contactSection = document.getElementById("contact");
@@ -164,6 +180,8 @@ function generateContactForm() {
     contactSection.appendChild(submitDiv);
 }
 
+/*** Ajoute un gestionnaire d'événements pour le formulaire de contact.*/
+
 function attachContactFormHandler() {
     const contactForm = document.querySelector("#contact form");
     contactForm.addEventListener("submit", (event) => {
@@ -180,6 +198,8 @@ function attachContactFormHandler() {
     });
 }
 
+/*** Scroll automatiquement vers une section spécifique en fonction de l'URL.*/
+
 document.addEventListener("DOMContentLoaded", () => {
     const sectionToScroll = window.location.hash.substring(1);
     if (sectionToScroll) {
@@ -193,6 +213,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 100);
     }
 });
+
+/*** Initialisation principale à l'écoute du chargement complet du DOM.*/
 
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();

@@ -139,6 +139,8 @@ submitButton.addEventListener('click', (event) => {
 
 /*********** Fonctions génériques ***********/
 
+/*** Ouvre une modale spécifique, initialise des éléments spécifiques si nécessaire.*/
+
 function openModal(pageId) {
     modalContainer.classList.remove('hidden');
     setTimeout(() => {
@@ -176,12 +178,16 @@ function openModal(pageId) {
     }
 }
 
+/*** Réinitialise le menu déroulant des catégories.*/
+
 function resetCategorySelect() {
     const categorySelect = document.getElementById('photo-category');
     if (categorySelect) {
         categorySelect.value = '';
     }
 }
+
+/*** Ferme la modale, réinitialise son contenu et gère l'affichage des boutons.*/
 
 function closeModal() {
     modalContainer.style.opacity = '0';
@@ -203,6 +209,8 @@ function closeModal() {
     }, 300);
 }
 
+/*** Change la page affichée dans une modale en fonction de l'ID fourni.*/
+
 function switchModalPage(pageId) {
     const modalPages = document.querySelectorAll('.modal-page');
     modalPages.forEach(page => {
@@ -210,6 +218,8 @@ function switchModalPage(pageId) {
     });
     backButton.style.display = pageId === 'modal-add-photo' ? 'block' : 'none';
 }
+
+/*** Remplit le menu déroulant des catégories avec les données fournies.*/
 
 function populateCategories(categories) {
     const categorySelect = document.getElementById('photo-category');
@@ -225,6 +235,8 @@ previewImage.addEventListener('click', () => {
     fileInput.click();
 });
 
+/*** Charge les catégories depuis une source principale ou attend leur disponibilité.*/
+
 async function loadCategoriesFromMain() {
     if (window.allCategories && window.allCategories.length > 0) {
         populateCategories(window.allCategories);
@@ -238,6 +250,8 @@ async function loadCategoriesFromMain() {
         }
     }
 }
+
+/*** Attend que les catégories soient chargées et retourne une promesse.*/
 
 async function waitForCategories() {
     return new Promise((resolve, reject) => {
@@ -331,6 +345,8 @@ document.body.addEventListener('click', function (event) {
 
 loadCategoriesFromMain();
 
+/*** Valide un fichier en fonction de son type et de sa taille maximale autorisée.*/
+
 function validateFile(file) {
     const allowedTypes = ['image/png', 'image/jpg'];
     const maxSize = 4 * 1024 * 1024;
@@ -399,6 +415,8 @@ addPhotoButtonForm.addEventListener('click', (event) => {
     fileInput.click();
 });
 
+/*** Vérifie si le formulaire est valide et met à jour l'état du bouton de soumission.*/
+
 function checkFormValidity() {
     console.log('Vérification de la validité du formulaire');
     const file = fileToSend;
@@ -418,6 +436,8 @@ function checkFormValidity() {
     submitButton.classList.toggle('active', !submitButton.disabled);
 }
 
+// Ajoute un écouteur pour détecter les changements dans l'entrée du fichier
+
 fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     
@@ -432,13 +452,19 @@ fileInput.addEventListener('change', (event) => {
     }
 });
 
+// Ajoute un écouteur pour détecter les changements dans l'entrée du titre
+
 titleInput.addEventListener('input', () => {
     checkFormValidity();
 });
 
+// Ajoute un écouteur pour détecter les changements dans la sélection des catégories
+
 categorySelect.addEventListener('change', () => {
     checkFormValidity();
 });
+
+/*** Récupère le jeton d'authentification depuis le stockage de session.*/
 
 function getAuthToken() {
     const token = sessionStorage.getItem("authToken");
@@ -449,6 +475,8 @@ function getAuthToken() {
     return token;
 }
 
+/*** Vérifie si le formulaire est valide en fonction du fichier, du titre et de la catégorie.*/
+
 function isFormValid(file, title, category) {
     if (!file || !title || !category) {
         alert('Veuillez remplir tous les champs');
@@ -457,6 +485,8 @@ function isFormValid(file, title, category) {
     return true;
 }
 
+/*** Crée un objet FormData avec les données du fichier, du titre et de la catégorie.*/
+
 function createFormData(file, title, category) {
     const formData = new FormData();
     formData.append('image', file);
@@ -464,6 +494,8 @@ function createFormData(file, title, category) {
     formData.append('category', category);
     return formData;
 }
+
+/*** Soumet une photo à l'API avec un formulaire et un jeton d'authentification.*/
 
 async function submitPhoto(formData, token) {
     try {
@@ -484,6 +516,8 @@ async function submitPhoto(formData, token) {
     }
 }
 
+/*** Traite la réponse de l'API pour vérifier le succès ou l'échec.*/
+
 function handleApiResponse(response) {
     if (response.ok) {
         return response.json();
@@ -492,6 +526,8 @@ function handleApiResponse(response) {
         return null;
     }
 }
+
+/*** Met à jour la galerie et les données des travaux après une soumission réussie.*/
 
 function updateGalleryAndWorks(newWork) {
     newWork.imageUrl = `${newWork.imageUrl}?t=${Date.now()}`;
@@ -514,6 +550,8 @@ function updateGalleryAndWorks(newWork) {
     resetModal();
     switchModalPage('modal-gallery');
 }
+
+/*** Gère la soumission du formulaire de téléchargement de photos.*/
 
 function handleSubmit(event) {
     event.preventDefault();
@@ -540,12 +578,16 @@ function handleSubmit(event) {
     });
 }
 
+/*** Affiche une popup de validation après un ajout réussi.*/
+
 function showValidationPopup() {
     createValidationPopup();
 
     const popup = document.getElementById('validation-popup');
     popup.style.display = 'flex';
 }
+
+/*** Crée une popup de validation si elle n'existe pas encore.*/
 
 function createValidationPopup() {
     if (document.getElementById('validation-popup')) return;
@@ -576,6 +618,8 @@ function createValidationPopup() {
     closeButton.addEventListener('click', hideValidationPopup);
 }
 
+/*** Cache la popup de validation lorsqu'elle est fermée.*/
+
 function hideValidationPopup() {
     const popup = document.getElementById('validation-popup');
     if (popup) {
@@ -591,6 +635,8 @@ if (uploadForm) {
 }
 
 let fileToSend = null;
+
+/*** Gère le changement de fichier et met à jour l'aperçu.*/
 
 function handleFileChange(event) {
     const file = event.target.files[0];
@@ -648,6 +694,8 @@ function handleFileChange(event) {
     reader.readAsDataURL(file);
 }
 
+/*** Simule un clic sur l'entrée de fichier lorsque le bouton d'ajout est cliqué.*/
+
 function handleAddPhotoClick(e) {
     e.preventDefault();
     const fileInput = document.getElementById('photo-file');
@@ -655,6 +703,8 @@ function handleAddPhotoClick(e) {
         fileInput.click();
     }
 }
+
+/*** Réinitialise les éléments de la modale de téléchargement.*/
 
 function resetModal() {
     const fileInput = document.getElementById('photo-file');

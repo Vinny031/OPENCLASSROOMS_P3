@@ -1,3 +1,5 @@
+// Écoute l'événement 'DOMContentLoaded' pour créer et afficher la page de connexion.
+
 document.addEventListener("DOMContentLoaded", () => {
     const main = document.getElementById("login-html");
 
@@ -72,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
     attachLoginHandlers();
 });
 
+/*** Fonction qui attache les gestionnaires d'événements au formulaire de connexion.*/
+
 function attachLoginHandlers() {
     const loginForm = document.querySelector(".login-form-container"); 
     const emailInput = document.querySelector(".js-email");
@@ -107,6 +111,8 @@ function attachLoginHandlers() {
         }
     });
 
+/*** Affiche un message d'erreur personnalisé dans l'élément dédié.*/
+    
     function afficherMessageErreur(message) {
         errorMessage.textContent = message;
         errorMessage.style.display = "block";

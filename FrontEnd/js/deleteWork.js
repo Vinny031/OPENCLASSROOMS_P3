@@ -1,3 +1,5 @@
+// Fonction pour supprimer un travail via l'API
+
 window.deleteWork = async function (workId) {
     try {
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
@@ -11,6 +13,8 @@ window.deleteWork = async function (workId) {
             throw new Error(`Erreur lors de la suppression du travail : ${response.statusText}`);
         }
 
+        // permet de filtrer la liste allWorks pour garder tous les éléments sauf celui avec un ID égal à un ID donné 
+
         allWorks = allWorks.filter(work => work.id !== parseInt(workId, 10));
 
         displayWorks(allWorks);
@@ -19,6 +23,8 @@ window.deleteWork = async function (workId) {
         console.error("Erreur lors de la suppression :", error);
     }
 };
+
+/*** Ajoute un gestionnaire d'événements pour afficher une popup de confirmation lors du clic sur l'icône de suppression.*/
 
 document.body.addEventListener('click', (event) => {
     if (event.target && event.target.classList.contains('trash-icon')) {
@@ -33,6 +39,8 @@ document.body.addEventListener('click', (event) => {
     }
 });
 
+/*** Affiche la popup de confirmation pour la suppression d'un travail.*/
+
 function showConfirmationPopup(workId) {
     createConfirmationPopup();
 
@@ -42,6 +50,8 @@ function showConfirmationPopup(workId) {
     const confirmButton = document.getElementById('popup-confirm');
     confirmButton.dataset.workId = workId;
 }
+
+/*** Crée la popup de confirmation si elle n'existe pas déjà.*/
 
 function createConfirmationPopup() {
     if (document.getElementById('confirmation-popup')) return;
@@ -95,6 +105,8 @@ function createConfirmationPopup() {
         hideConfirmationPopup();
     });
 }
+
+/*** Cache la popup de confirmation après une action.*/
 
 function hideConfirmationPopup() {
     const popup = document.getElementById('confirmation-popup');
